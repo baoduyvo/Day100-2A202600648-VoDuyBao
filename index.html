@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Xanh SM - PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00bda4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="XanhSM">
+    <link rel="apple-touch-icon" href="assets/3d_blue_car_1780885213991.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header Section with Map Background -->
+    <header class="top-header">
+        <div class="search-container" onclick="window.location.href='search_location.html'" style="cursor: pointer;">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Bạn muốn đi đâu?" readonly style="pointer-events: none;">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="content">
+        
+        <!-- Top Services -->
+        <div class="top-services horizontal-scroll">
+            <div class="top-service-item">
+                <div class="service-icon"><i class="fa-solid fa-bus" style="color: #4CAF50; font-size: 24px;"></i></div>
+                <span>VinBus</span>
+            </div>
+            <div class="top-service-item">
+                <div class="service-icon"><i class="fa-solid fa-map-location-dot" style="color: #2196F3; font-size: 24px;"></i></div>
+                <span>Liên tỉnh</span>
+            </div>
+            <div class="top-service-item">
+                <div class="service-icon"><i class="fa-solid fa-car" style="color: #9C27B0; font-size: 24px;"></i></div>
+                <span>Mua xe<br>VinFast</span>
+            </div>
+            <div class="top-service-item">
+                <div class="service-icon"><i class="fa-solid fa-gift" style="color: #FF9800; font-size: 24px;"></i></div>
+                <span>Thẻ quà<br>tặng</span>
+            </div>
+            <div class="top-service-item">
+                <div class="service-icon"><i class="fa-solid fa-plane-departure" style="color: #00BCD4; font-size: 24px;"></i></div>
+                <span>Sân bay</span>
+            </div>
+            <div class="top-service-item">
+                <div class="service-icon"><i class="fa-solid fa-stopwatch" style="color: #F44336; font-size: 24px;"></i></div>
+                <span>Thuê theo<br>giờ</span>
+            </div>
+        </div>
+
+        <!-- Promo Carousel -->
+        <section class="section promo-carousel" style="padding-top: 10px;">
+            <div class="carousel-container horizontal-scroll">
+                <img src="assets/lucky_wheel_banner_1780886046799.png" alt="Lucky Wheel Promo" class="promo-banner">
+            </div>
+            <div class="pagination">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </section>
+
+        <!-- Food Recommendations Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>✨ Gần bạn có món ngon đấy, thử luôn không?</h2>
+                <i class="fa-solid fa-ellipsis"></i>
+            </div>
+            
+            <div class="horizontal-scroll">
+                <div class="food-card">
+                    <div class="image-wrapper">
+                        <img src="assets/matcha_drink_1780885302939.png" alt="Matcha Drink">
+                        <div class="rating"><i class="fa-solid fa-star"></i> 4.7</div>
+                    </div>
+                    <div class="food-info">
+                        <h3><i class="fa-solid fa-circle-check cyan"></i> Highlands Coffee - Vinhol...</h3>
+                        <div class="food-stats">
+                            <span><i class="fa-solid fa-star" style="color: #FFC107;"></i> 4.7 (129)</span>
+                            <span><i class="fa-solid fa-shopping-bag" style="color: #ff9800;"></i> 3.2K+</span>
+                        </div>
+                        <div class="food-tags">
+                            <span class="tag tag-orange"><i class="fa-solid fa-ticket"></i> 40k</span>
+                            <span class="tag tag-blue"><i class="fa-solid fa-box"></i> Freeship</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <div class="image-wrapper">
+                        <img src="assets/black_banh_mi_1780885315049.png" alt="Bami Sot">
+                        <div class="rating"><i class="fa-solid fa-star"></i> 4.7</div>
+                    </div>
+                    <div class="food-info">
+                        <h3><i class="fa-solid fa-circle-check cyan"></i> Bami Sot - Bánh Mì Đen...</h3>
+                        <div class="food-stats">
+                            <span><i class="fa-solid fa-star" style="color: #FFC107;"></i> 4.7 (170)</span>
+                            <span><i class="fa-solid fa-shopping-bag" style="color: #ff9800;"></i> 3.2K+</span>
+                        </div>
+                        <div class="food-tags">
+                            <span class="tag tag-orange"><i class="fa-solid fa-ticket"></i> 120k</span>
+                            <span class="tag tag-blue"><i class="fa-solid fa-box"></i> Freeship</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <div class="image-wrapper">
+                        <img src="assets/tea_drink_1780885345956.png" alt="Phe La">
+                        <div class="rating"><i class="fa-solid fa-star"></i> 4.8</div>
+                    </div>
+                    <div class="food-info">
+                        <h3><i class="fa-solid fa-circle-check cyan"></i> Phê La - Trà & Cà Phê...</h3>
+                        <div class="food-stats">
+                            <span><i class="fa-solid fa-star" style="color: #FFC107;"></i> 4.8 (220)</span>
+                            <span><i class="fa-solid fa-shopping-bag" style="color: #ff9800;"></i> 4.5K+</span>
+                        </div>
+                        <div class="food-tags">
+                            <span class="tag tag-orange"><i class="fa-solid fa-ticket"></i> 45k</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions horizontal-scroll">
+            <button class="chip">Xem ưu đãi</button>
+            <button class="chip">Đặt xe ô tô</button>
+            <button class="chip">Đặt xe máy</button>
+        </div>
+
+        <!-- Main Banners -->
+        <section class="main-banners">
+            <div class="banner banner-cyan" onclick="window.location.href='search_location.html'" style="cursor: pointer;">
+                <div class="banner-text">
+                    <h2>Đặt xe</h2>
+                </div>
+                <img src="assets/3d_blue_car_1780885213991.png" alt="Car" class="banner-img banner-car">
+            </div>
+            
+            <div class="banner banner-orange">
+                <div class="banner-text">
+                    <h2>Đặt đồ ăn</h2>
+                </div>
+                <img src="assets/3d_food_bundle_1780885224897.png" alt="Food" class="banner-img banner-food">
+            </div>
+        </section>
+
+        <!-- Other Services Grid -->
+        <section class="section services">
+            <div class="section-header">
+                <h2>Dịch vụ khác</h2>
+                <a href="#" class="see-all">Xem tất cả</a>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-item" onclick="window.location.href='search_location.html'" style="cursor: pointer;">
+                    <div class="service-icon">
+                        <img src="assets/3d_blue_scooter_1780885237432.png" alt="Xe máy">
+                    </div>
+                    <span>Xe máy</span>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon">
+                        <img src="assets/3d_delivery_box_1780885257604.png" alt="Giao hàng">
+                    </div>
+                    <span>Giao hàng</span>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon">
+                        <img src="assets/3d_diamond_1780885269361.png" alt="Hội viên">
+                    </div>
+                    <span>Hội viên</span>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon">
+                        <img src="assets/3d_car_keys_1780885280126.png" alt="Thuê xe tự lái">
+                    </div>
+                    <span>Thuê xe tự lái</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Gift Banner -->
+        <section class="section">
+            <div class="gift-banner">
+                <div class="gift-content">
+                    <img src="assets/gift_banner_icon_1780886058039.png" alt="Gift">
+                    <div class="gift-text">
+                        <h3>Quà tặng xịn tặng người thân</h3>
+                        <p>Quà nho nhỏ, cho niềm vui to</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </section>
+
+        <!-- Membership Packages -->
+        <section class="section membership">
+            <div class="section-header">
+                <h2>Gói hội viên</h2>
+                <a href="#" class="see-all">Xem tất cả</a>
+            </div>
+            <div class="horizontal-scroll">
+                <div class="membership-card">
+                    <div class="membership-header">
+                        <span class="membership-badge">Gói hội viên x110</span>
+                        <h3>XANH<br>UNLIMITED</h3>
+                        <img src="assets/3d_blue_car_1780885213991.png" alt="Car" class="membership-img">
+                    </div>
+                    <div class="membership-body">
+                        <p class="savings">Tiết kiệm lên đến<br>3.800.000</p>
+                        <h4>Green Unlimited Cá Nhân</h4>
+                        <div class="price">Từ 25.000đ<span>/tháng</span></div>
+                        <p class="trial">1 tháng dùng thử</p>
+                    </div>
+                </div>
+                
+                <div class="membership-card">
+                    <div class="membership-header">
+                        <span class="membership-badge">Gói hội viên x150</span>
+                        <h3>XANH<br>UNLIMITED</h3>
+                        <img src="assets/3d_blue_scooter_1780885237432.png" alt="Scooter" class="membership-img">
+                    </div>
+                    <div class="membership-body">
+                        <p class="savings">Tiết kiệm lên đến<br>4.625.000 VNĐ</p>
+                        <h4>Green Unlimited Gia Đình</h4>
+                        <div class="price">Từ 44.167đ<span>/tháng</span></div>
+                        <p class="trial">1 tháng dùng thử</p>
+                    </div>
+                </div>
+                
+                <div class="membership-card">
+                    <div class="membership-header">
+                        <span class="membership-badge">Gói hội viên x50</span>
+                        <h3>XANH<br>UNLIMITED</h3>
+                        <img src="assets/3d_delivery_box_1780885257604.png" alt="Box" class="membership-img">
+                    </div>
+                    <div class="membership-body">
+                        <p class="savings">Tiết kiệm lên đến<br>1.500.000 VNĐ</p>
+                        <h4>Green Unlimited Sinh Viên</h4>
+                        <div class="price">Từ 15.000đ<span>/tháng</span></div>
+                        <p class="trial">1 tháng dùng thử</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Food Offers -->
+        <section class="section food-offers">
+            <div class="section-header">
+                <h2>Ưu đãi quán ngon</h2>
+                <a href="#" class="see-all">Xem tất cả</a>
+            </div>
+            <div class="horizontal-scroll">
+                <div class="offer-card">
+                    <img src="assets/highlands_offer_1780886069231.png" alt="Highlands">
+                    <h3>Highlands Coffee</h3>
+                    <p>Mua Phindi Tặng Cafe - Chỉ 59K</p>
+                </div>
+                <div class="offer-card">
+                    <img src="assets/phuclong_offer_1780886097555.png" alt="Phuc Long">
+                    <h3>Phúc Long</h3>
+                    <p>Phúc Long - Mua 2 Tặng 1</p>
+                </div>
+                <div class="offer-card">
+                    <img src="assets/matcha_drink_1780885302939.png" alt="Gong Cha">
+                    <h3>Gong Cha</h3>
+                    <p>Giảm 30% Đơn Từ 100K</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Offers -->
+        <section class="section payment-offers">
+            <div class="section-header">
+                <h2>Ưu đãi thanh toán</h2>
+                <a href="#" class="see-all">Xem tất cả</a>
+            </div>
+            <div class="horizontal-scroll">
+                <div class="offer-card banner-style">
+                    <img src="assets/bank_offer_1_1780886109329.png" alt="Bank Offer">
+                    <p>Đặt Green SM - Ưu đãi cực lớn cùng thẻ OCB</p>
+                </div>
+                <div class="offer-card banner-style">
+                    <img src="assets/bank_offer_2_1780886119171.png" alt="Bank Offer">
+                    <p>Đi Green SM - Ưu đãi thanh toán với HDBank</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Entertainment -->
+        <section class="section entertainment">
+            <div class="section-header">
+                <h2>Giải trí</h2>
+                <a href="#" class="see-all">Xem tất cả</a>
+            </div>
+            <div class="horizontal-scroll">
+                <div class="offer-card banner-style">
+                    <img src="assets/lucky_wheel_banner_1780886046799.png" alt="Entertainment">
+                    <p>Vòng Xanh May Mắn 🎡</p>
+                </div>
+                <div class="offer-card banner-style">
+                    <img src="assets/entertainment_thumb_1780886148396.png" alt="Entertainment">
+                    <p>Ra mắt MV Bác Tài Xanh Xin Chào 💙</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="spacer"></div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-item active">
+                <i class="fa-solid fa-house"></i>
+            </a>
+            <a href="activity.html" class="nav-item">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </a>
+            <a href="notifications.html" class="nav-item">
+                <div class="badge-container">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge"></span>
+                </div>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- AI Floating Button (outside nav to avoid fixed stacking context issue) -->
+    <div class="right-circle-btn" id="ai-float-btn" onmouseenter="showAiGreeting()" onmouseleave="hideAiGreeting()" onclick="openAiModal()">
+        <img src="assets/ai_icon_vinfast.png" alt="AI Assistant" style="width:52px;height:52px;object-fit:contain;border-radius:50%;">
+    </div>
+
+    <script src="app.js?v=13"></script>
+</body>
+</html>

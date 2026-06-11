@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xanh SM - Đang tìm tài xế</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .info-block {
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid #f5f5f5;
+        }
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .block-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #212121;
+        }
+        .block-detail-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: #424242;
+            text-decoration: none;
+        }
+        .route-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        .route-item:last-child {
+            margin-bottom: 0;
+        }
+        .route-icon {
+            margin-right: 12px;
+            margin-top: 2px;
+        }
+        .route-text {
+            flex: 1;
+        }
+        .route-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #212121;
+            margin-bottom: 4px;
+        }
+        .route-subtitle {
+            font-size: 13px;
+            color: #757575;
+            line-height: 1.4;
+        }
+        .pulse-animation {
+            animation: pulse-bg 1.5s infinite alternate;
+        }
+        @keyframes pulse-bg {
+            0% { background-color: #f5f5f5; }
+            100% { background-color: #e0e0e0; }
+        }
+    </style>
+</head>
+<body style="margin: 0; overflow: hidden; background-color: #f4f4f4;">
+
+    <div style="height: 100vh; display: flex; flex-direction: column;">
+        <!-- Map Area -->
+        <div style="flex: 1; position: relative;">
+            <!-- Google Maps iframe -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    marginheight="0" 
+                    marginwidth="0" 
+                    src="https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    style="border:0; filter: saturate(1.2) brightness(1.1);" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Top Overlay -->
+            <div style="position: absolute; top: 20px; left: 20px; z-index: 10;">
+                <button style="margin: 0; background: #fff; width: 44px; height: 44px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #eee; cursor: pointer;" onclick="window.history.back()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </div>
+            
+            <!-- Finding Status Card -->
+            <div style="position: absolute; top: 80px; left: 20px; right: 20px; z-index: 10;">
+                <div style="background: #fff; border-radius: 20px; padding: 16px 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: center;">
+                    <span style="font-size: 16px; font-weight: 700; color: #212121;">Đang có nhiều tài xế hoạt động quanh đây</span>
+                    <!-- Loading bar -->
+                    <div style="height: 4px; background: #e0f6f4; border-radius: 2px; margin-top: 12px; overflow: hidden; position: relative;">
+                        <div style="position: absolute; top: 0; left: 0; height: 100%; width: 40%; background: #00bcd4; border-radius: 2px; animation: loading 1.5s infinite ease-in-out alternate;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Sheet -->
+        <div style="background: #f9f9f9; border-radius: 24px 24px 0 0; padding: 20px; box-shadow: 0 -4px 16px rgba(0,0,0,0.05); z-index: 20; position: relative; margin-top: -20px; display: flex; flex-direction: column; max-height: 60vh; overflow-y: auto;">
+            
+            <!-- Route Info -->
+            <div class="info-block">
+                <div class="block-header">
+                    <span class="block-title">Green Bike</span>
+                    <a href="#" class="block-detail-link">Chi tiết <i class="fa-solid fa-chevron-right" style="font-size: 12px; margin-left: 4px;"></i></a>
+                </div>
+                
+                <div class="route-item">
+                    <div class="route-icon"><i class="fa-solid fa-circle-dot" style="color: #424242; font-size: 14px;"></i></div>
+                    <div class="route-text">
+                        <div class="route-title">Cổng Phụ - Trường Đại Học VinUni - Vinh...</div>
+                        <div class="route-subtitle">Xã Gia Lâm, Thành Phố Hà Nội, Việt Nam</div>
+                    </div>
+                </div>
+                
+                <div style="position: absolute; left: 42px; top: 105px; width: 2px; height: 30px; background-color: #e0e0e0;"></div>
+                
+                <div class="route-item">
+                    <div class="route-icon"><i class="fa-solid fa-square" style="color: #ffca28; font-size: 14px;"></i></div>
+                    <div class="route-text">
+                        <div class="route-title">Nhà Hát Lớn Hà Nội</div>
+                        <div class="route-subtitle">15.2km • 1 Đường Tràng Tiền, Phường Cửa Nam,...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="info-block">
+                <div class="block-header">
+                    <span class="block-title">Thanh toán</span>
+                    <a href="#" class="block-detail-link">Chi tiết <i class="fa-solid fa-chevron-right" style="font-size: 12px; margin-left: 4px;"></i></a>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="background: #eedeef; width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center;">
+                            <i class="fa-solid fa-money-bill" style="color: #7e57c2; font-size: 14px;"></i>
+                        </div>
+                        <span style="font-size: 15px; font-weight: 500; color: #424242;">Tiền mặt</span>
+                    </div>
+                    <span style="font-size: 15px; font-weight: 600; color: #424242;">81.000đ</span>
+                </div>
+            </div>
+
+            <!-- Other Options -->
+            <div class="info-block" style="padding-bottom: 8px;">
+                <div class="block-title" style="margin-bottom: 16px;">Khác</div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-shield-halved" style="color: #757575; font-size: 18px;"></i>
+                        <span style="font-size: 15px; font-weight: 500; color: #424242;">Hỗ trợ an toàn chuyến</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color: #9e9e9e; font-size: 14px;"></i>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <i class="fa-solid fa-receipt" style="color: #757575; font-size: 18px; margin-top: 2px;"></i>
+                        <div>
+                            <div style="font-size: 15px; font-weight: 500; color: #424242; margin-bottom: 4px;">Yêu cầu xuất hoá đơn</div>
+                            <div style="font-size: 13px; color: #757575;">Xuất hoá đơn không có tên công ty.</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color: #9e9e9e; font-size: 14px;"></i>
+                </div>
+            </div>
+
+            <!-- Cancel Button -->
+            <div style="text-align: center; margin-top: 12px; margin-bottom: 16px;">
+                <span style="font-size: 16px; font-weight: 700; color: #212121; cursor: pointer;" onclick="window.location.href='booking.html'">Huỷ chuyến</span>
+            </div>
+            
+        </div>
+    </div>
+    
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(150%); }
+        }
+        @keyframes slideInDown {
+            from { transform: translate(-50%, -20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+    </style>
+
+    <script>
+        // Simulate waiting for driver for 5 seconds
+        setTimeout(() => {
+            // Show toast notification
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.top = '60px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.background = '#4CAF50';
+            toast.style.color = 'white';
+            toast.style.padding = '14px 24px';
+            toast.style.borderRadius = '30px';
+            toast.style.fontWeight = '600';
+            toast.style.fontSize = '14px';
+            toast.style.boxShadow = '0 4px 12px rgba(76, 175, 80, 0.3)';
+            toast.style.zIndex = '10000';
+            toast.style.whiteSpace = 'nowrap';
+            toast.style.animation = 'slideInDown 0.3s ease-out';
+            toast.innerHTML = '<i class="fa-solid fa-check-circle" style="margin-right: 8px;"></i> Tài xế Nguyễn Sỹ Cường đã nhận chuyến!';
+            document.body.appendChild(toast);
+            
+            // Wait 1.5 seconds then redirect to driver found
+            setTimeout(() => {
+                window.location.href = 'driver_found.html';
+            }, 2000);
+            
+        }, 5000); // Wait 5 seconds
+    </script>
+</body>
+</html>

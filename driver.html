@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xanh SM Driver - Tài xế Nguyễn Sỹ Cường</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00bda4;
+            --primary-cyan: #00bda4;
+            --primary-cyan-light: #e0f6f4;
+            --primary-dark: #008f7c;
+            --secondary-color: #2e7d32;
+            --secondary-light: #e8f5e9;
+            --background: #f7f9fa;
+            --card-bg: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --border-color: #eeeeee;
+            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Mobile Screen Container */
+        .phone-container {
+            width: 100%;
+            height: 100vh;
+            background-color: var(--background);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top Header Wrapper */
+        .top-header-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Simulated Status Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 20px 6px;
+            color: var(--text-main);
+        }
+        .status-bar .icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .status-bar .icons i {
+            font-size: 12px;
+        }
+
+        /* App Header Bar */
+        .header-bar {
+            padding: 6px 20px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .driver-status {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(46, 125, 50, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2e7d32;
+            border-radius: 50%;
+            animation: pulse 1.2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .offline-btn {
+            background: rgba(0, 189, 164, 0.08);
+            border: 1px solid rgba(0, 189, 164, 0.15);
+            color: var(--primary-cyan);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .offline-btn:hover {
+            background: rgba(0, 189, 164, 0.15);
+        }
+
+        /* Map Area */
+        .map-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background-color: #e6ecef;
+        }
+        .map-iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: saturate(1.1) brightness(1.0);
+        }
+
+        /* Bottom Sheet panel */
+        .bottom-sheet {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 28px 28px 0 0;
+            padding: 12px 20px 24px;
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 20;
+            transition: transform 0.3s cubic-bezier(0.1, 0.76, 0.55, 0.94);
+        }
+
+        .sheet-drag-handle {
+            width: 40px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin: 0 auto 16px;
+        }
+
+        .customer-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .avatar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2.5px solid var(--primary-cyan);
+            box-shadow: 0 4px 12px rgba(0, 189, 164, 0.2);
+            overflow: hidden;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .customer-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .rating-text {
+            font-size: 12px;
+            color: #ffb300;
+            margin-top: 2px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .action-icons {
+            display: flex;
+            gap: 10px;
+        }
+        .circle-icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .circle-icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Route detail block */
+        .route-details {
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            margin-bottom: 18px;
+        }
+        .route-point {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .point-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20px;
+            margin-top: 2px;
+        }
+        .line {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--primary-cyan) 0%, #ffca28 100%);
+            margin-top: 4px;
+        }
+        .point-text {
+            flex: 1;
+        }
+        .point-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .point-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+
+        /* Custom Slide to Confirm Button */
+        .slider-container {
+            width: 100%;
+            height: 58px;
+            background-color: var(--primary-cyan-light);
+            border: 1px solid rgba(0, 189, 164, 0.15);
+            border-radius: 29px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            user-select: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .slider-text {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            background: linear-gradient(90deg, #008f7c 0%, #00bda4 50%, #008f7c 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .slider-bg-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0%;
+            background: linear-gradient(90deg, #008f7c 0%, var(--primary-cyan) 100%);
+            border-radius: 29px;
+            z-index: 1;
+            transition: width 0.1s ease-out;
+        }
+        .slider-handle {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            left: 4px;
+            z-index: 3;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 189, 164, 0.25);
+            transition: left 0.1s ease-out;
+        }
+        .slider-handle:active {
+            transform: scale(0.98);
+        }
+        .slider-handle i {
+            font-size: 18px;
+            animation: nudgeArrow 1.5s infinite;
+        }
+        @keyframes nudgeArrow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(3px); }
+        }
+
+        /* Complete Screen (Invoice & Receipt) */
+        .invoice-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f7f9fa;
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            padding: 16px 24px 24px;
+            overflow-y: auto;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .success-illustration {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 16px;
+        }
+        .success-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background-color: var(--secondary-light);
+            border: 2px solid #a5d6a7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: var(--secondary-color);
+            font-size: 32px;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
+            animation: popCheck 0.5s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        @keyframes popCheck {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .trip-completed-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 16px;
+        }
+        .trip-completed-desc {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Receipt Card */
+        .receipt-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            margin-top: 16px;
+            box-shadow: var(--shadow-soft);
+        }
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .receipt-row.total {
+            border-top: 1px dashed var(--border-color);
+            padding-top: 16px;
+            margin-top: 16px;
+            margin-bottom: 0;
+        }
+        .receipt-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .receipt-value {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .receipt-value.price {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary-cyan);
+        }
+
+        .payment-badge {
+            background-color: #f3e8ff;
+            color: #7e57c2;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Rating Widget */
+        .rating-section {
+            margin-top: 18px;
+            text-align: center;
+        }
+        .rating-section p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .stars-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .star-item {
+            font-size: 26px;
+            color: #e5e5ea;
+            cursor: pointer;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .star-item.selected {
+            color: #ffca28;
+            transform: scale(1.05);
+        }
+
+        .action-btn-primary {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(0, 189, 164, 0.2);
+            transition: all 0.2s;
+        }
+        .action-btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 6px 16px rgba(0, 189, 164, 0.3);
+        }
+        .action-btn-danger {
+            background: #ff3b30;
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.2);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .action-btn-danger:hover {
+            background: #d32f2f;
+            box-shadow: 0 6px 16px rgba(255, 59, 48, 0.3);
+        }
+
+        /* Custom Alert Dialog */
+        .alert-modal {
+            position: absolute;
+            top: 75px;
+            left: 20px;
+            right: 20px;
+            background: rgba(33, 33, 33, 0.95);
+            color: white;
+            border-radius: 16px;
+            padding: 14px 16px;
+            z-index: 300;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: slideDownAlert 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        @keyframes slideDownAlert {
+            from { transform: translateY(-40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-container">
+        
+        <!-- Top Header Wrapper (Status Bar + Header Bar) -->
+        <div class="top-header-wrapper">
+            
+            <!-- App Header Bar -->
+            <div class="header-bar">
+                <div class="driver-status">
+                    <div class="pulse-dot"></div>
+                    <span id="statusLabel">Trực tuyến (Đang chờ đón)</span>
+                </div>
+                <button class="offline-btn" onclick="resetFlow()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+            </div>
+        </div>
+
+        <!-- Custom Notification Alert -->
+        <div class="alert-modal" id="alertModal">
+            <div style="background: rgba(255,255,255,0.2); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+                <div style="font-weight: 700; font-size: 14px;" id="alertTitle">Xanh SM Driver</div>
+                <div style="font-size: 12px; margin-top: 2px; opacity: 0.9;" id="alertDesc">Chuyến đi mới đã bắt đầu!</div>
+            </div>
+        </div>
+
+        <!-- Map Navigation -->
+        <div class="map-wrapper">
+            <iframe 
+                id="mapIframe"
+                class="map-iframe"
+                src="https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <!-- Bottom Ride Sheet -->
+        <div class="bottom-sheet" id="bottomSheet" style="transform: translateY(100%);">
+            <!-- Sheet drag handle bar -->
+            <div class="sheet-drag-handle"></div>
+
+            <!-- Customer info card -->
+            <div class="customer-card">
+                <div class="avatar-wrap">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Passenger">
+                    </div>
+                    <div>
+                        <div class="customer-name" id="passengerName">Nguyễn Văn A</div>
+                        <div class="rating-text">
+                            <i class="fa-solid fa-star" style="color: #ffc107;"></i> 4.9 
+                            <span style="color: #8e8e93; font-weight: 500; margin-left: 4px;">• Hành khách Thân thiết</span>
+                        </div>
+                        <div style="margin-top: 6px;">
+                            <span style="background: #fff3cd; color: #856404; font-weight: 700; font-size: 11px; padding: 4px 8px; border-radius: 8px; display: inline-block;">
+                                <i class="fa-solid fa-hands-holding-child"></i> Cuốc xe hỗ trợ người yếu thế
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-icons">
+                    <div class="circle-icon-btn" style="background-color: #e5f1ff; color: #007aff;"><i class="fa-solid fa-comment"></i></div>
+                    <div class="circle-icon-btn" style="background-color: #e8f5e9; color: #34c759; cursor: pointer;" onclick="callPassenger()"><i class="fa-solid fa-phone"></i></div>
+                </div>
+            </div>
+
+            <!-- Route Details -->
+            <div class="route-details">
+                <div class="route-point" style="margin-bottom: 8px;">
+                    <div class="point-icon">
+                        <i class="fa-solid fa-location-dot" style="color: var(--primary-cyan); font-size: 16px;"></i>
+                        <div class="line"></div>
+                    </div>
+                    <div class="point-text">
+                        <div class="point-title">Cổng Phụ - Trường Đại Học VinUni</div>
+                        <div class="point-subtitle">Khu đô thị Vinhomes Ocean Park, Gia Lâm, Hà Nội</div>
+                    </div>
+                </div>
+                <div class="route-point">
+                    <div class="point-icon">
+                        <i class="fa-solid fa-location-pin" style="color: #ffca28; font-size: 16px;"></i>
+                    </div>
+                    <div class="point-text">
+                        <div class="point-title">Nhà Hát Lớn Hà Nội</div>
+                        <div class="point-subtitle">1 Đường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội (15.2 km)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Button -->
+            <div class="slider-container" id="sliderContainer">
+                <div class="slider-bg-fill" id="sliderBgFill"></div>
+                <span class="slider-text" id="sliderText">Trượt để Bắt đầu hành trình</span>
+                <div class="slider-handle" id="sliderHandle">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <!-- Cancel Button -->
+            <button class="action-btn-danger" id="cancelTripBtn" onclick="cancelTrip()">
+                <i class="fa-solid fa-times"></i> Hủy chuyến xe
+            </button>
+        </div>
+
+        <!-- Invoice / Receipt Screen (Screen 2) -->
+        <div class="invoice-screen" id="invoiceScreen">
+            <div class="success-illustration">
+                <div class="success-circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="trip-completed-title">Chuyến Đi Đã Hoàn Thành!</h3>
+                <p class="trip-completed-desc">Hệ thống đã thực hiện giao dịch thanh toán tự động.</p>
+            </div>
+
+            <div class="receipt-card">
+                <div class="receipt-row">
+                    <span class="receipt-label">Mã chuyến đi</span>
+                    <span class="receipt-value">XSM-20260608-49</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Hành khách</span>
+                    <span class="receipt-value">Nguyễn Văn A</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Quãng đường</span>
+                    <span class="receipt-value">15.2 km</span>
+                </div>
+                <div class="receipt-row" style="margin-bottom: 0;">
+                    <span class="receipt-label">Hình thức</span>
+                    <div class="payment-badge">
+                        <i class="fa-solid fa-wallet"></i> Ví Xanh Pay
+                    </div>
+                </div>
+                <div class="receipt-row total">
+                    <span class="receipt-label" style="font-weight: 700; color: var(--text-main);">Tổng doanh thu</span>
+                    <span class="receipt-value price">54.000đ</span>
+                </div>
+            </div>
+
+            <div class="rating-section">
+                <p>Đánh giá hành khách của bạn</p>
+                <div class="stars-wrap">
+                    <i class="fa-solid fa-star star-item selected" onclick="ratePassenger(1)"></i>
+                    <i class="fa-solid fa-star star-item selected" onclick="ratePassenger(2)"></i>
+                    <i class="fa-solid fa-star star-item selected" onclick="ratePassenger(3)"></i>
+                    <i class="fa-solid fa-star star-item selected" onclick="ratePassenger(4)"></i>
+                    <i class="fa-solid fa-star star-item selected" onclick="ratePassenger(5)"></i>
+                </div>
+            </div>
+
+            <button class="action-btn-primary" onclick="resetFlow()">
+                <i class="fa-solid fa-rotate-right"></i> Sẵn sàng đón chuyến mới
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        window.currentPickupLocation = "Cổng Phụ - Trường Đại Học VinUni";
+        window.currentDestinationLocation = "Nhà hát lớn Hà Nội";
+        let isTripStarted = false;
+        let isSpeechEnabled = true;
+
+        // Establish WebSocket Connection
+        let socket;
+        function initWebSocket() {
+            try {
+                socket = new WebSocket('ws://localhost:8001');
+                socket.onopen = () => console.log('WebSocket connected on driver side.');
+                socket.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        console.log('Driver received event:', data);
+                        if (data.type === 'call_answered') {
+                            receiveCallAnswered();
+                        } else if (data.type === 'call_ended') {
+                            const overlay = document.getElementById('driverCallOverlay');
+                            if (overlay) overlay.style.display = 'none';
+                        } else if (data.type === 'pickup_changed') {
+                            updateDriverPickupLocation(data.location, data.dist);
+                        } else if (data.type === 'destination_changed') {
+                            updateDriverDestinationLocation(data.location, data.dist);
+                        } else if (data.type === 'driver_found') {
+                            showNewTripPopup(data);
+                        } else if (data.type === 'simulation_reset') {
+                            resetFlowLocally();
+                        }
+                    } catch (e) {
+                        console.error('Error parsing WebSocket message:', e);
+                    }
+                };
+                socket.onclose = () => {
+                    console.log('WebSocket disconnected on driver side. Reconnecting...');
+                    setTimeout(initWebSocket, 2000);
+                };
+                socket.onerror = (err) => console.error('WebSocket error on driver side:', err);
+            } catch (e) {
+                console.error('WebSocket initialization failed:', e);
+            }
+        }
+        initWebSocket();
+
+        // Custom Slider Confirmation Mechanism
+        const sliderHandle = document.getElementById('sliderHandle');
+        const sliderContainer = document.getElementById('sliderContainer');
+        const sliderBgFill = document.getElementById('sliderBgFill');
+        const sliderText = document.getElementById('sliderText');
+
+        let isDragging = false;
+        let startX = 0;
+        let containerWidth = 0;
+        let handleWidth = 50;
+        let maxSlide = 0;
+
+        function initSlider() {
+            containerWidth = sliderContainer.offsetWidth;
+            maxSlide = containerWidth - handleWidth - 8; // Adjust padding margins
+        }
+
+        window.addEventListener('resize', initSlider);
+        window.addEventListener('DOMContentLoaded', () => {
+            initSlider();
+            speakAI("Bác tài Nguyễn Sỹ Cường đã trực tuyến và sẵn sàng đón chuyến mới.");
+        });
+
+        // Touch & Mouse Event Listeners for Slider
+        sliderHandle.addEventListener('mousedown', dragStart);
+        sliderHandle.addEventListener('touchstart', dragStart, { passive: true });
+
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('touchmove', dragMove, { passive: false });
+
+        window.addEventListener('mouseup', dragEnd);
+        window.addEventListener('touchend', dragEnd);
+
+        function dragStart(e) {
+            isDragging = true;
+            startX = e.clientX || e.touches[0].clientX;
+            sliderHandle.style.cursor = 'grabbing';
+            initSlider();
+        }
+
+        function dragMove(e) {
+            if (!isDragging) return;
+            if (e.cancelable) e.preventDefault();
+            
+            const currentX = e.clientX || e.touches[0].clientX;
+            let deltaX = currentX - startX;
+            
+            if (deltaX < 0) deltaX = 0;
+            if (deltaX > maxSlide) deltaX = maxSlide;
+
+            sliderHandle.style.left = (deltaX + 4) + 'px';
+            const percentage = (deltaX / maxSlide) * 100;
+            sliderBgFill.style.width = percentage + '%';
+            sliderText.style.opacity = Math.max(0, 1 - (percentage / 60));
+        }
+
+        function dragEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            sliderHandle.style.cursor = 'grab';
+
+            const currentLeft = parseFloat(sliderHandle.style.left) - 4;
+            const threshold = maxSlide * 0.85; // Need to slide 85% to confirm
+
+            if (currentLeft >= threshold) {
+                // Trigger action success!
+                sliderHandle.style.left = (maxSlide + 4) + 'px';
+                sliderBgFill.style.width = '100%';
+                setTimeout(handleSliderConfirmation, 150);
+            } else {
+                // Reset slide
+                sliderHandle.style.left = '4px';
+                sliderBgFill.style.width = '0%';
+                sliderText.style.opacity = 1;
+            }
+        }
+
+        // Logic routing states
+        function handleSliderConfirmation() {
+            if (!isTripStarted) {
+                // Màn hình 1: Đón khách thành công -> Bắt đầu hành trình
+                isTripStarted = true;
+                
+                // Send WebSocket event
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({ type: 'pickup_confirmed' }));
+                }
+                
+                // Show Banner alert notification
+                showAlert("Bắt đầu hành trình!", "Bác tài đã đón khách thành công. Di chuyển đến Nhà Hát Lớn Hà Nội.");
+                
+                // Speak out loud (TTS)
+                speakAI("Tài xế Nguyễn Sỹ Cường đã xác nhận đón hành khách thành công. Bắt đầu hành trình di chuyển từ Cổng Phụ Đại Học VinUni đến Nhà Hát Lớn Hà Nội. Quãng đường 15.2 km.");
+                
+                // Update header status
+                document.getElementById('statusLabel').textContent = 'Đang thực hiện chuyến đi';
+                const driverStatus = document.getElementById('statusLabel').parentNode;
+                driverStatus.style.background = 'var(--primary-cyan-light)';
+                driverStatus.style.color = 'var(--primary-dark)';
+                driverStatus.style.borderColor = 'rgba(0, 189, 164, 0.3)';
+                const dot = driverStatus.querySelector('.pulse-dot');
+                if (dot) dot.style.backgroundColor = 'var(--primary-dark)';
+                
+                // Update Map to Route zoom / Nhà hát lớn
+                document.getElementById('mapIframe').src = "https://maps.google.com/maps?q=Hanoi%20Opera%20House,%20H%C3%A0%20N%E1%BB%99i&t=&z=15&ie=UTF8&iwloc=&output=embed";
+
+                // Update Slider for completing the trip
+                sliderText.textContent = "Trượt để Hoàn thành chuyến đi";
+                sliderText.style.opacity = 1;
+                sliderHandle.style.left = '4px';
+                sliderBgFill.style.width = '0%';
+                
+                // Hide Cancel Button
+                const cancelBtn = document.getElementById('cancelTripBtn');
+                if (cancelBtn) cancelBtn.style.display = 'none';
+            } else {
+                // Màn hình 2: Hoàn thành chuyến đi -> Xem hóa đơn trừ tiền ví
+                showInvoiceScreen();
+            }
+        }
+
+        // Màn hình 2: Hiện hóa đơn và trừ tiền ví
+        function showInvoiceScreen() {
+            const screen = document.getElementById('invoiceScreen');
+            screen.style.display = 'flex';
+
+            // Send WebSocket event
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ type: 'trip_completed' }));
+            }
+
+            // Show custom alert
+            showAlert("Chuyến đi hoàn thành!", "Số tiền 54.000đ đã tự động khấu trừ qua ví Xanh Pay.");
+
+            // AI Voice Announcement
+            speakAI("Tài xế Nguyễn Sỹ Cường đã xác nhận hoàn thành chuyến đi. Số tiền 54 nghìn đồng đã được tự động trừ trong ví Xanh Pay của khách hàng. Cảm ơn bác tài!");
+        }
+
+        // Popup and Acceptance Logic for New Trip
+        let activeTripData = null;
+
+        function showNewTripPopup(data) {
+            activeTripData = data;
+            
+            // Set details in popup
+            document.getElementById('newTripPickup').textContent = data.pickup;
+            document.getElementById('newTripDestination').textContent = data.destination;
+            document.getElementById('newTripDist').textContent = data.dist;
+            document.getElementById('newTripPrice').textContent = data.price;
+            
+            // Show modal
+            document.getElementById('newTripModal').style.display = 'flex';
+            
+            // Speak alert
+            speakAI("Bác tài Nguyễn Sỹ Cường, bạn có cuốc xe mới. Vui lòng nhận cuốc!");
+        }
+
+        function acceptNewTrip() {
+            // Hide modal
+            document.getElementById('newTripModal').style.display = 'none';
+            
+            // Send WebSocket event
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ type: 'trip_accepted' }));
+            }
+            
+            if (activeTripData) {
+                // Update route points in bottom sheet
+                updateDriverPickupLocation(activeTripData.pickup, activeTripData.dist);
+                updateDriverDestinationLocation(activeTripData.destination, activeTripData.dist);
+                
+                // Update current locations globals
+                window.currentPickupLocation = activeTripData.pickup;
+                window.currentDestinationLocation = activeTripData.destination;
+                
+                // Update final receipt details in invoice screen too!
+                const receiptPriceEl = document.querySelector('.receipt-value.price');
+                if (receiptPriceEl) {
+                    receiptPriceEl.textContent = activeTripData.price;
+                }
+                const receiptDistEl = document.querySelector('.receipt-card .receipt-row:nth-child(3) .receipt-value');
+                if (receiptDistEl) {
+                    receiptDistEl.textContent = activeTripData.dist;
+                }
+                
+                // Update Map based on destination
+                if (activeTripData.destination.includes("Hoàn Kiếm") || activeTripData.destination.includes("Nhà hát lớn")) {
+                    document.getElementById('mapIframe').src = "https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed";
+                } else if (activeTripData.destination.includes("Lăng Chủ tịch")) {
+                    document.getElementById('mapIframe').src = "https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed";
+                } else if (activeTripData.destination.includes("AEON Mall")) {
+                    document.getElementById('mapIframe').src = "https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed";
+                }
+            }
+            
+            // Slide up bottom sheet
+            document.getElementById('bottomSheet').style.transform = 'translateY(0)';
+            
+            // Speak confirmation
+            speakAI("Đã nhận cuốc xe thành công. Bắt đầu di chuyển đón khách.");
+            
+            // Update header status
+            document.getElementById('statusLabel').textContent = 'Trực tuyến (Đang đón khách)';
+            const driverStatus = document.getElementById('statusLabel').parentNode;
+            driverStatus.style.background = 'var(--primary-cyan-light)';
+            driverStatus.style.color = 'var(--primary-dark)';
+            driverStatus.style.borderColor = 'rgba(0, 189, 164, 0.3)';
+            const dot = driverStatus.querySelector('.pulse-dot');
+            if (dot) dot.style.backgroundColor = 'var(--primary-dark)';
+        }
+
+        // Cancel Trip Logic
+        function cancelTrip() {
+            if (confirm("Bạn có chắc chắn muốn hủy chuyến xe này?")) {
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({ type: 'trip_cancelled' }));
+                }
+                showAlert("Đã hủy chuyến", "Bạn đã hủy chuyến xe thành công.");
+                speakAI("Chuyến xe đã bị hủy.");
+                resetFlowLocally();
+            }
+        }
+
+        // Reset Flow to Online Initial state
+        function resetFlow() {
+            isTripStarted = false;
+            document.getElementById('invoiceScreen').style.display = 'none';
+            document.getElementById('alertModal').style.display = 'none';
+            
+            const newTripModal = document.getElementById('newTripModal');
+            if (newTripModal) newTripModal.style.display = 'none';
+            
+            const bottomSheet = document.getElementById('bottomSheet');
+            if (bottomSheet) bottomSheet.style.transform = 'translateY(100%)';
+
+            // Send WebSocket event
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ type: 'simulation_reset' }));
+            }
+
+            // Reset status header
+            document.getElementById('statusLabel').textContent = 'Trực tuyến (Đang chờ đón)';
+            const driverStatus = document.getElementById('statusLabel').parentNode;
+            driverStatus.style.background = '#e8f5e9';
+            driverStatus.style.color = '#2e7d32';
+            driverStatus.style.borderColor = '#a5d6a7';
+            const dot = driverStatus.querySelector('.pulse-dot');
+            if (dot) dot.style.backgroundColor = '#2e7d32';
+
+            // Reset Map
+            document.getElementById('mapIframe').src = "https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed";
+
+            // Reset Slider
+            sliderText.textContent = "Trượt để Bắt đầu hành trình";
+            sliderText.style.opacity = 1;
+            sliderHandle.style.left = '4px';
+            sliderBgFill.style.width = '0%';
+
+            // Show Cancel Button
+            const cancelBtn = document.getElementById('cancelTripBtn');
+            if (cancelBtn) cancelBtn.style.display = 'flex';
+
+            // Reset Rating Stars
+            ratePassenger(5);
+
+            speakAI("Bác tài Nguyễn Sỹ Cường đã trực tuyến và sẵn sàng đón chuyến mới.");
+        }
+
+        function resetFlowLocally() {
+            isTripStarted = false;
+            document.getElementById('invoiceScreen').style.display = 'none';
+            document.getElementById('alertModal').style.display = 'none';
+            
+            const newTripModal = document.getElementById('newTripModal');
+            if (newTripModal) newTripModal.style.display = 'none';
+            
+            const bottomSheet = document.getElementById('bottomSheet');
+            if (bottomSheet) bottomSheet.style.transform = 'translateY(100%)';
+
+            // Reset status header
+            document.getElementById('statusLabel').textContent = 'Trực tuyến (Đang chờ đón)';
+            const driverStatus = document.getElementById('statusLabel').parentNode;
+            driverStatus.style.background = '#e8f5e9';
+            driverStatus.style.color = '#2e7d32';
+            driverStatus.style.borderColor = '#a5d6a7';
+            const dot = driverStatus.querySelector('.pulse-dot');
+            if (dot) dot.style.backgroundColor = '#2e7d32';
+
+            // Reset Map
+            document.getElementById('mapIframe').src = "https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed";
+
+            // Reset Slider
+            sliderText.textContent = "Trượt để Bắt đầu hành trình";
+            sliderText.style.opacity = 1;
+            sliderHandle.style.left = '4px';
+            sliderBgFill.style.width = '0%';
+
+            // Show Cancel Button
+            const cancelBtn = document.getElementById('cancelTripBtn');
+            if (cancelBtn) cancelBtn.style.display = 'flex';
+
+            // Reset Rating Stars
+            ratePassenger(5);
+        }
+
+        // Helper ratings
+        function ratePassenger(stars) {
+            const starItems = document.querySelectorAll('.star-item');
+            starItems.forEach((star, index) => {
+                if (index < stars) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+        }
+
+        // Show Banner alert modal helper
+        function showAlert(title, desc) {
+            const modal = document.getElementById('alertModal');
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertDesc').textContent = desc;
+            
+            modal.style.display = 'flex';
+            modal.style.opacity = '1';
+            modal.style.transform = 'translateY(0)';
+            
+            setTimeout(() => {
+                modal.style.opacity = '0';
+                modal.style.transform = 'translateY(-20px)';
+                modal.style.transition = 'opacity 0.4s, transform 0.4s';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.style.opacity = '1';
+                    modal.style.transform = 'translateY(0)';
+                }, 400);
+            }, 6000);
+        }
+
+        // Helper Speech synthesis
+        function speakAI(text) {
+            if (!isSpeechEnabled) return;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'vi-VN';
+                utterance.rate = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // --- Call System Helpers on Driver Side ---
+        function callPassenger() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ type: 'driver_calling' }));
+                
+                // Show Overlay
+                const overlay = document.getElementById('driverCallOverlay');
+                overlay.style.display = 'flex';
+                document.getElementById('driverCallTitle').textContent = 'Đang gọi cho khách hàng...';
+                document.getElementById('driverCallSubtitle').textContent = 'Vui lòng chờ khách hàng nhấc máy';
+                document.getElementById('driverCallDialogue').style.display = 'none';
+                document.getElementById('driverCallDialogue').innerHTML = '';
+                
+                speakAI("Đang kết nối cuộc gọi đến hành khách.");
+            } else {
+                showAlert("Lỗi kết nối", "Không thể gọi. Vui lòng kiểm tra kết nối WebSocket.");
+            }
+        }
+        
+        function endDriverCall() {
+            const overlay = document.getElementById('driverCallOverlay');
+            overlay.style.display = 'none';
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ type: 'call_ended' }));
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+        }
+        
+        function receiveCallAnswered() {
+            document.getElementById('driverCallTitle').textContent = 'Cuộc gọi đang kết nối';
+            document.getElementById('driverCallSubtitle').textContent = 'Cuộc trò chuyện với Nguyễn Văn A';
+            const diagBox = document.getElementById('driverCallDialogue');
+            diagBox.style.display = 'block';
+            diagBox.innerHTML = '<div style="color: #4cd964; font-style: italic; margin-bottom: 8px;">Đã kết nối...</div>';
+            
+            const pickupLoc = window.currentPickupLocation || "Cổng Phụ - Trường Đại Học VinUni";
+            // Sync conversation text logs on driver screen
+            addDiagText('Tài xế', `Alo, tôi là tài xế Nguyễn Sỹ Cường đây. Tôi đang đỗ ở ${pickupLoc} rồi, bạn sắp ra tới chưa?`);
+            
+            setTimeout(() => {
+                addDiagText('Bạn (Khách)', 'Dạ em đang đi xuống đây ạ, tầm 1 phút nữa em ra tới.');
+            }, 6000);
+            
+            setTimeout(() => {
+                addDiagText('Tài xế', 'Vâng, xe điện màu xanh cyan biển số 29AB-907.77 bạn nhé.');
+            }, 11000);
+            
+            setTimeout(() => {
+                addDiagText('Bạn (Khách)', 'Dạ em thấy rồi, em đang đi ra đây.');
+            }, 16000);
+            
+            setTimeout(() => {
+                diagBox.innerHTML += '<div style="color: #ff3b30; font-style: italic; margin-top: 8px;">Cuộc gọi đã kết thúc.</div>';
+                setTimeout(() => {
+                    document.getElementById('driverCallOverlay').style.display = 'none';
+                }, 2000);
+            }, 20000);
+        }
+
+        function updateDriverPickupLocation(location, dist) {
+            window.currentPickupLocation = location;
+            
+            const titleEl = document.querySelector('.route-point:first-child .point-title');
+            if (titleEl) {
+                titleEl.textContent = location;
+            }
+            
+            const subtitleEl = document.querySelector('.route-point:first-child .point-subtitle');
+            if (subtitleEl) {
+                if (location.includes("Vinhomes Ocean Park") || location.includes("VinUni")) {
+                    subtitleEl.textContent = "Khu đô thị Vinhomes Ocean Park, Gia Lâm, Hà Nội";
+                } else if (location.includes("Times City")) {
+                    subtitleEl.textContent = "458 Minh Khai, Vĩnh Tuy, Hai Bà Trưng, Hà Nội";
+                } else {
+                    subtitleEl.textContent = "Hà Nội, Việt Nam";
+                }
+            }
+
+            const destSubtitleEl = document.querySelector('.route-point:nth-child(2) .point-subtitle');
+            if (destSubtitleEl) {
+                destSubtitleEl.textContent = `1 Đường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội (${dist})`;
+            }
+        }
+
+        function updateDriverDestinationLocation(location, dist) {
+            window.currentDestinationLocation = location;
+            
+            const titleEl = document.querySelector('.route-point:nth-child(2) .point-title');
+            if (titleEl) {
+                titleEl.textContent = location;
+            }
+            
+            const subtitleEl = document.querySelector('.route-point:nth-child(2) .point-subtitle');
+            if (subtitleEl) {
+                if (location.includes("Hoàn Kiếm")) {
+                    subtitleEl.textContent = `Hồ Hoàn Kiếm, Quận Hoàn Kiếm, Hà Nội (${dist})`;
+                } else if (location.includes("Lăng Chủ tịch")) {
+                    subtitleEl.textContent = `2 Hùng Vương, Điện Biên, Ba Đình, Hà Nội (${dist})`;
+                } else if (location.includes("AEON Mall")) {
+                    subtitleEl.textContent = `27 Cổ Linh, Long Biên, Hà Nội (${dist})`;
+                } else {
+                    subtitleEl.textContent = `1 Đường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội (${dist})`;
+                }
+            }
+        }
+        
+        function addDiagText(sender, text) {
+            const diagBox = document.getElementById('driverCallDialogue');
+            const item = document.createElement('div');
+            item.style.marginBottom = '6px';
+            if (sender === 'Tài xế') {
+                item.innerHTML = `<b style="color: #00bda4;">📞 Tài xế:</b> <span style="color: #fff;">"${text}"</span>`;
+            } else {
+                item.innerHTML = `<b style="color: #ffca28;">📞 Khách:</b> <span style="color: #eee;">"${text}"</span>`;
+            }
+            diagBox.appendChild(item);
+            diagBox.scrollTop = diagBox.scrollHeight;
+        }
+    </script>
+
+    <!-- New Trip Modal Popup Alert -->
+    <div id="newTripModal" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px;">
+        <div style="background: white; width: 100%; max-width: 340px; border-radius: 24px; padding: 24px; box-shadow: var(--shadow-medium); text-align: center; border: 2px solid var(--primary-cyan); animation: popInNewTrip 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            <div style="width: 72px; height: 72px; background: var(--primary-cyan-light); border: 3px solid var(--primary-cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; position: relative;">
+                <i class="fa-solid fa-bell" style="color: var(--primary-cyan); font-size: 32px; animation: ringBell 0.8s infinite alternate;"></i>
+            </div>
+            
+            <h2 style="font-size: 22px; font-weight: 800; color: #111; margin-bottom: 6px;">CUỐC XE MỚI!</h2>
+            <span style="background: var(--secondary-light); color: var(--secondary-color); font-weight: 700; font-size: 13px; padding: 4px 12px; border-radius: 12px; display: inline-block; margin-bottom: 8px;">
+                <i class="fa-solid fa-wallet"></i> Ví Xanh Pay
+            </span>
+            <div style="margin-bottom: 20px;">
+                <span style="background: #fff3cd; color: #856404; font-weight: 700; font-size: 13px; padding: 4px 12px; border-radius: 12px; display: inline-block;">
+                    <i class="fa-solid fa-hands-holding-child"></i> Cuốc xe hỗ trợ người yếu thế
+                </span>
+            </div>
+
+            <!-- Trip Details Card inside Popup -->
+            <div style="background: #f7f9fa; border: 1px solid #eee; border-radius: 16px; padding: 16px; margin-bottom: 24px; text-align: left; font-family: 'Inter', sans-serif;">
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px;">
+                    <i class="fa-solid fa-circle-dot" style="color: var(--primary-cyan); font-size: 15px; margin-top: 3px; width: 16px; text-align: center;"></i>
+                    <div>
+                        <span style="color: #757575; font-size: 11px; font-weight: 600; display: block; text-transform: uppercase;">Điểm đón khách</span>
+                        <b id="newTripPickup" style="color: #212121; font-size: 14px;">Tòa S2.12 - Vinhomes Ocean Park</b>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px;">
+                    <i class="fa-solid fa-location-dot" style="color: #ffca28; font-size: 16px; margin-top: 2px; width: 16px; text-align: center;"></i>
+                    <div>
+                        <span style="color: #757575; font-size: 11px; font-weight: 600; display: block; text-transform: uppercase;">Điểm đến</span>
+                        <b id="newTripDestination" style="color: #212121; font-size: 14px;">Nhà hát lớn Hà Nội</b>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #ddd; padding-top: 12px; margin-top: 12px;">
+                    <div>
+                        <span style="color: #757575; font-size: 11px; font-weight: 600; display: block; text-transform: uppercase;">Cự ly</span>
+                        <b id="newTripDist" style="color: #212121; font-size: 14px;">14.5 km</b>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="color: #757575; font-size: 11px; font-weight: 600; display: block; text-transform: uppercase;">Doanh thu</span>
+                        <b id="newTripPrice" style="color: #e53935; font-size: 18px; font-weight: 800;">51.000đ</b>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button Actions -->
+            <button onclick="acceptNewTrip()" style="width: 100%; background: var(--primary-cyan); color: white; border: none; padding: 16px; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 20px rgba(0,189,164,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="fa-solid fa-check-double"></i>
+                NHẬN CUỐC XE
+            </button>
+        </div>
+    </div>
+
+    <style>
+    @keyframes popInNewTrip {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes ringBell {
+        0% { transform: rotate(-12deg); }
+        100% { transform: rotate(12deg); }
+    }
+    </style>
+
+    <!-- Calling Overlay for Driver -->
+    <div id="driverCallOverlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.92); z-index: 500; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 24px; text-align: center;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: #00bda4; display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 24px; animation: pulseCalling 1.5s infinite alternate; box-shadow: 0 4px 16px rgba(0,189,164,0.3);">
+            <i class="fa-solid fa-phone"></i>
+        </div>
+        <h3 id="driverCallTitle" style="font-size: 20px; margin-bottom: 8px;">Đang gọi cho khách hàng...</h3>
+        <p id="driverCallSubtitle" style="font-size: 14px; color: #aaa; margin-bottom: 30px;">Vui lòng chờ khách hàng nhấc máy</p>
+        
+        <div id="driverCallDialogue" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; width: 100%; max-width: 320px; text-align: left; font-size: 14px; line-height: 1.5; margin-bottom: 30px; display: none; max-height: 200px; overflow-y: auto;">
+            <!-- Dialogue texts appear here -->
+        </div>
+        
+        <button onclick="endDriverCall()" style="background: #ff3b30; color: white; border: none; border-radius: 50%; width: 56px; height: 56px; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(255,59,48,0.3);">
+            <i class="fa-solid fa-phone-slash"></i>
+        </button>
+    </div>
+    <style>
+        @keyframes pulseCalling {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 189, 164, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(0, 189, 164, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 189, 164, 0); }
+        }
+    </style>
+</body>
+</html>

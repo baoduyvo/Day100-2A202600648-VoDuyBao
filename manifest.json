@@ -1,0 +1,17 @@
+{
+  "name": "Xanh SM Clone",
+  "short_name": "XanhSM",
+  "description": "A PWA clone of the Xanh SM app interface.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00bda4",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/3d_blue_car_1780885213991.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

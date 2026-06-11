@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xanh SM - Đăng nhập</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-color: #ffffff; overflow-x: hidden;">
+
+    <div class="login-container">
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <button class="btn-lang">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN"> Tiếng Việt <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+
+        <!-- Hero Graphic -->
+        <div class="login-hero">
+            <!-- Simulated background lines/arcs -->
+            <div class="hero-circle hero-circle-1"></div>
+            <div class="hero-circle hero-circle-2"></div>
+            
+            <img src="assets/3d_blue_car_1780885213991.png" alt="Car" class="floating-item floating-car">
+            <img src="assets/3d_blue_scooter_1780885237432.png" alt="Scooter" class="floating-item floating-scooter">
+            <img src="assets/3d_food_bundle_1780885224897.png" alt="Food" class="floating-item floating-food">
+            
+            <h1 class="login-title">Green SM Mọi<br>thứ trong tầm<br>tay</h1>
+            <p class="login-subtitle">Đăng ký hoặc đăng nhập để bắt<br>đầu hành trình xanh của bạn</p>
+        </div>
+
+        <!-- Phone Input Form -->
+        <div class="login-form">
+            <div class="phone-input-group">
+                <div class="country-code">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN"> +84 <i class="fa-solid fa-caret-down"></i>
+                </div>
+                <input type="tel" class="phone-input" placeholder="Số điện thoại" oninput="checkInput(this)">
+            </div>
+            
+            <button class="btn-primary btn-disabled" id="btn-continue" onclick="window.location.href='index.html'">Tiếp tục</button>
+        </div>
+
+        <!-- Alternative Logins -->
+        <div class="login-alternatives">
+            <div class="divider">
+                <span>Đăng nhập bằng xác thực khuôn mặt/vân tay</span>
+            </div>
+            
+            <button class="btn-biometric" onclick="window.location.href='index.html'">
+                <i class="fa-solid fa-face-smile"></i>
+            </button>
+            
+            <div class="divider">
+                <span>Hoặc đăng nhập bằng</span>
+            </div>
+            
+            <div class="social-login-group">
+                <button class="btn-social btn-apple" onclick="window.location.href='index.html'">
+                    <i class="fa-brands fa-apple"></i> Tiếp tục với Apple
+                </button>
+                <button class="btn-social btn-google" onclick="window.location.href='index.html'">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G"> Tiếp tục với Google
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        function checkInput(input) {
+            const btn = document.getElementById('btn-continue');
+            if(input.value.length >= 9) {
+                btn.classList.remove('btn-disabled');
+                btn.style.background = '#00bda4';
+                btn.style.color = 'white';
+            } else {
+                btn.classList.add('btn-disabled');
+                btn.style.background = '#f0f0f0';
+                btn.style.color = '#a0a0a0';
+            }
+        }
+    </script>
+</body>
+</html>

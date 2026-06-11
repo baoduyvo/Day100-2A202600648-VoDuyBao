@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Xanh SM - Thông báo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-color: #ffffff;">
+
+    <header class="top-header notification-top-header">
+        <div class="activity-header">
+            <h1>Thông báo</h1>
+            <i class="fa-solid fa-check-double" style="color: #00bda4; font-size: 18px;"></i>
+        </div>
+
+        <div class="filter-tabs">
+            <div class="filter-tab active">Tất cả</div>
+            <div class="filter-tab outline">Cập nhật</div>
+        </div>
+    </header>
+
+    <main class="content notification-content">
+        
+        <div class="notification-item unread">
+            <div class="notification-icon-wrapper">
+                <i class="fa-solid fa-mobile-screen" style="color: #00897b; font-size: 20px;"></i>
+            </div>
+            
+            <div class="notification-body">
+                <div class="notification-title">
+                    💙 Loạt concert lớn đổ bộ Hà Nội...
+                </div>
+                <div class="notification-desc">
+                    🔥 Hà Nội đang rực lửa với chuỗi nhạc hội đỉnh cao mùa hè này!
+                </div>
+                <button class="btn-green-outline">Đi Green Ngay!</button>
+            </div>
+            
+            <div class="notification-meta">
+                <span class="date">01/06</span>
+                <span class="unread-dot"></span>
+            </div>
+        </div>
+
+        <!-- Adding a second notification item to show how it looks without unread state -->
+        <div class="notification-item">
+            <div class="notification-icon-wrapper">
+                <i class="fa-solid fa-gift" style="color: #00897b; font-size: 20px;"></i>
+            </div>
+            
+            <div class="notification-body">
+                <div class="notification-title">
+                    🎁 Tặng bạn mã giảm 30%
+                </div>
+                <div class="notification-desc">
+                    Nhập mã CHAOHE30 để nhận ngay ưu đãi khi di chuyển bằng Xanh SM.
+                </div>
+            </div>
+            
+            <div class="notification-meta">
+                <span class="date">31/05</span>
+            </div>
+        </div>
+
+        <div class="spacer"></div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+            </a>
+            <a href="activity.html" class="nav-item">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </a>
+            <a href="notifications.html" class="nav-item active">
+                <div class="badge-container">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge"></span>
+                </div>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- AI Floating Button (outside nav to avoid fixed stacking context issue) -->
+    <div class="right-circle-btn" id="ai-float-btn" onmouseenter="showAiGreeting()" onmouseleave="hideAiGreeting()" onclick="openAiModal()">
+        <img src="assets/ai_icon_vinfast.png" alt="AI Assistant" style="width:52px;height:52px;object-fit:contain;border-radius:50%;">
+    </div>
+
+    <script src="app.js?v=13"></script>
+</body>
+</html>

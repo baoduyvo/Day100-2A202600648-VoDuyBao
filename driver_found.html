@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xanh SM - Tài xế đang đến</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .info-block {
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid #f5f5f5;
+        }
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .block-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #212121;
+        }
+        .block-detail-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: #424242;
+            text-decoration: none;
+        }
+        .route-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        .route-item:last-child {
+            margin-bottom: 0;
+        }
+        .route-icon {
+            margin-right: 12px;
+            margin-top: 2px;
+        }
+        .route-text {
+            flex: 1;
+        }
+        .route-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #212121;
+            margin-bottom: 4px;
+        }
+        .route-subtitle {
+            font-size: 13px;
+            color: #757575;
+            line-height: 1.4;
+        }
+        .driver-bg {
+            background: linear-gradient(180deg, #f0fdfc 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 20px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid #e0f6f4;
+            position: relative;
+            min-height: 180px;
+        }
+        .chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .chat-input {
+            flex: 1;
+            background: #f5f5f5;
+            border: 1px solid #eeeeee;
+            border-radius: 12px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #757575;
+            font-size: 14px;
+        }
+        .call-btn {
+            width: 48px;
+            height: 48px;
+            background: #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        /* Simulation Controls Style */
+        .sim-control-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1.5px solid #00bcd4;
+            border-radius: 16px;
+            padding: 12px;
+            width: 220px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        .sim-title {
+            font-weight: 700;
+            color: #00bcd4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        .sim-btn {
+            background: #00bcd4;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12px;
+            width: 100%;
+            margin-top: 6px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .sim-btn:hover {
+            background: #0097a7;
+        }
+        .sim-btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .sim-btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        .sim-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .sim-speed-btn {
+            flex: 1;
+            padding: 4px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .sim-speed-btn.active {
+            background: #e0f7fa;
+            border-color: #00bcd4;
+            color: #00838f;
+            font-weight: 700;
+        }
+
+        /* AI Voice Panel Style */
+        .ai-assistant-card {
+            background: linear-gradient(135deg, rgba(224, 246, 244, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
+            border: 1.5px solid rgba(0, 188, 212, 0.2);
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 12px;
+            box-shadow: 0 4px 20px rgba(0, 188, 212, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .ai-bot-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ai-avatar {
+            width: 36px;
+            height: 36px;
+            background: radial-gradient(circle, #00f2fe 0%, #00bcd4 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,188,212,0.3);
+            animation: pulseGlow 2s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 4px rgba(0, 188, 212, 0.3); }
+            100% { box-shadow: 0 0 16px rgba(0, 188, 212, 0.7); }
+        }
+        .ai-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #006064;
+        }
+        .ai-status-badge {
+            background: rgba(0, 188, 212, 0.1);
+            color: #00838f;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .ai-message-bubble {
+            background: white;
+            border: 1px solid #e0f2f1;
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 14px;
+            color: #263238;
+            line-height: 1.5;
+            font-weight: 500;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+        }
+        .ai-message-bubble::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 18px;
+            border-width: 0 6px 6px;
+            border-style: solid;
+            border-color: transparent transparent white;
+        }
+        .ai-voice-waves {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 16px;
+            margin-right: 4px;
+        }
+        .voice-bar {
+            width: 3px;
+            height: 4px;
+            background-color: #00bcd4;
+            border-radius: 2px;
+            transition: height 0.1s ease;
+        }
+        .voice-bar.speaking {
+            animation: waveMotion 1.2s infinite ease-in-out;
+        }
+        .voice-bar:nth-child(1) { animation-delay: 0.1s; }
+        .voice-bar:nth-child(2) { animation-delay: 0.2s; }
+        .voice-bar:nth-child(3) { animation-delay: 0.3s; }
+        .voice-bar:nth-child(4) { animation-delay: 0.4s; }
+        .voice-bar:nth-child(5) { animation-delay: 0.5s; }
+        
+        @keyframes waveMotion {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+
+        /* Route Progress Bar */
+        .route-progress-container {
+            width: 100%;
+            height: 6px;
+            background: #e0f2f1;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .route-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00f2fe 0%, #00bcd4 100%);
+            border-radius: 3px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Custom Toast Notification */
+        .toast-notif {
+            position: fixed;
+            top: 75px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(33, 33, 33, 0.95);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            z-index: 100005;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+            width: 85%;
+            max-width: 340px;
+            animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-sizing: border-box;
+        }
+        @keyframes toastIn {
+            from { transform: translate(-50%, -20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+    </style>
+</head>
+<body style="margin: 0; overflow: hidden; background-color: #f4f4f4;">
+
+    <!-- Simulation Control Panel -->
+    <div class="sim-control-panel" id="simPanel">
+        <div class="sim-title">
+            <span><i class="fa-solid fa-gears"></i> Giả Lập Trạng Thái</span>
+            <button style="background: none; border: none; color: #00bcd4; cursor: pointer; padding: 0 4px;" onclick="toggleSimPanel()"><i class="fa-solid fa-chevron-up" id="simCollapseIcon"></i></button>
+        </div>
+        <div id="simContent">
+            <div style="margin-bottom: 8px; font-size: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: #757575;">Trạng thái xe:</span>
+                <span id="simStateText" style="font-weight: 700; color: #ff9800; background: rgba(255, 152, 0, 0.1); padding: 2px 6px; border-radius: 4px;">Đang đến</span>
+            </div>
+            
+            <button class="sim-btn" id="simMainBtn" onclick="triggerNextState()">
+                <i class="fa-solid fa-forward"></i> Tài xế đến điểm đón
+            </button>
+            
+            <div class="sim-row">
+                <button class="sim-btn sim-btn-secondary" style="margin-top:0; flex:1;" id="simPlayPauseBtn" onclick="toggleSpeech()" disabled>
+                    <i class="fa-solid fa-pause"></i> Dừng đọc
+                </button>
+                <button class="sim-btn sim-btn-secondary" style="margin-top:0; flex:1;" id="simSkipBtn" onclick="skipAnnouncement()" disabled>
+                    <i class="fa-solid fa-forward-step"></i> Bỏ qua
+                </button>
+            </div>
+            
+            <div style="margin-top: 10px;">
+                <span style="color: #757575; font-size: 11px; display: block; margin-bottom: 4px; font-weight: 600;">Tốc độ đọc lộ trình:</span>
+                <div class="sim-row">
+                    <button class="sim-speed-btn" id="speed10s" onclick="setSpeed(10)">10 Giây</button>
+                    <button class="sim-speed-btn" id="speed3s" onclick="setSpeed(3)">3 Giây</button>
+                    <button class="sim-speed-btn active" id="speed1s" onclick="setSpeed(1)">1 Giây</button>
+                </div>
+            </div>
+            <div style="margin-top: 8px; border-top: 1px dashed #eee; padding-top: 6px; font-size: 11px; color: #9e9e9e; text-align: center; line-height: 1.3;">
+                Có thể chọn <b>3 Giây / 1 Giây</b> để kiểm tra nhanh chuỗi 20 thông báo của AI.
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 100vh; display: flex; flex-direction: column;">
+        <!-- Map Area -->
+        <div style="flex: 1; position: relative;">
+            <!-- Google Maps iframe -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: auto;">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    marginheight="0" 
+                    marginwidth="0" 
+                    src="https://maps.google.com/maps?q=VinUniversity,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Top Overlay -->
+            <div style="position: absolute; top: 20px; left: 20px; z-index: 10;">
+                <button style="margin: 0; background: #fff; width: 44px; height: 44px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #eee; cursor: pointer;" onclick="window.history.back()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </div>
+            
+            <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10;">
+                <div style="background: #fff; border-radius: 20px; padding: 8px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: #424242;">
+                    <i class="fa-solid fa-utensils" style="color: #ff9800;"></i> Nhà Hàng Nhật
+                </div>
+            </div>
+            
+            <!-- Tracking Status Card -->
+            <div style="position: absolute; top: 80px; left: 20px; right: 20px; z-index: 10;" id="status-card-outer">
+                <div style="background: #fff; border-radius: 20px; padding: 16px 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center;" id="status-card-inner">
+                    <span id="status-text" style="font-size: 16px; font-weight: 700; color: #212121;">Tài xế sẽ đón bạn trong <span style="color: #00bcd4;" id="eta-minutes">2 phút</span></span>
+                    <div id="route-progress-wrapper" style="display: none; margin-top: 8px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #757575; font-weight: 600;">
+                            <span>Đang di chuyển: 15.2 km</span>
+                            <span id="eta-trip-text">Dự kiến đến: 25 phút</span>
+                        </div>
+                        <div class="route-progress-container">
+                            <div class="route-progress-bar" id="routeProgressBar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Sheet -->
+        <div style="background: #f9f9f9; border-radius: 24px 24px 0 0; padding: 20px; box-shadow: 0 -4px 16px rgba(0,0,0,0.05); z-index: 20; position: relative; margin-top: -20px; display: block; max-height: 60vh; overflow-y: auto;">
+            
+            <!-- Driver Info Block -->
+            <div class="driver-bg">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2;">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: #607d8b; letter-spacing: 0.5px; margin-bottom: 6px;">EVO • XANH CYAN</div>
+                        <div style="font-size: 28px; font-weight: 900; color: #212121; letter-spacing: 1px; margin-bottom: 12px;">29AB-907.77</div>
+                    </div>
+                    <img src="assets/3d_blue_scooter_1780885237432.png" alt="Scooter" style="width: 160px; position: absolute; right: -20px; top: -30px; mix-blend-mode: multiply; z-index: 1;">
+                </div>
+                
+                <div style="display: flex; align-items: center; margin-top: 24px; gap: 12px; position: relative; z-index: 2;">
+                    <div style="width: 52px; height: 52px; border-radius: 50%; background: #e0e0e0; overflow: hidden; border: 2.5px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Driver" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                        <div style="font-size: 16px; font-weight: 700; color: #212121; display: flex; align-items: center; gap: 4px;">Nguyễn Sỹ Cường <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #9e9e9e; margin-left: 4px;"></i></div>
+                        <div style="font-size: 13px; font-weight: 600; color: #757575; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                            <i class="fa-solid fa-star" style="color: #ffca28; font-size: 12px;"></i> 5.0
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-wrapper" style="margin-top: 24px; margin-bottom: 8px;">
+                    <div class="chat-input" style="height: 48px; background-color: #f5f5f5; border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+                        <i class="fa-solid fa-message" style="color: #9e9e9e;"></i> Nhắn tin với bác tài.
+                    </div>
+                    <div class="call-btn" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Xanh SM AI Assistant Panel -->
+            <div class="ai-assistant-card" id="aiAssistantCard" style="display: none; margin-bottom: 12px;">
+                <div class="ai-header">
+                    <div class="ai-bot-info">
+                        <div class="ai-avatar">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div>
+                            <div class="ai-name">Trợ lý ảo Xanh SM AI</div>
+                            <div style="display: flex; align-items: center; gap: 4px; font-size: 11px; color: #757575; font-weight: 500;">
+                                <div class="ai-voice-waves" id="voiceWaves">
+                                    <div class="voice-bar"></div>
+                                    <div class="voice-bar"></div>
+                                    <div class="voice-bar"></div>
+                                    <div class="voice-bar"></div>
+                                    <div class="voice-bar"></div>
+                                </div>
+                                <span id="voiceStatusText">Đang nghe</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="ai-status-badge" id="aiStatusBadge" style="background: rgba(0, 188, 212, 0.1); color: #00838f;">Hoạt động</span>
+                </div>
+                
+                <div class="ai-message-bubble" id="aiMessageBubble">
+                    Bác tài đang di chuyển đến điểm đón. Khi bắt đầu hành trình, tôi sẽ cập nhật chi tiết lộ trình tại đây.
+                </div>
+                
+                <!-- Announcement Log Container -->
+                <div style="max-height: 120px; overflow-y: auto; border-top: 1px dashed rgba(0, 188, 212, 0.15); padding-top: 8px; margin-top: 4px;" id="aiLogContainer">
+                    <div style="font-size: 11px; font-weight: 700; color: #757575; margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">
+                        <i class="fa-solid fa-list-ul"></i> NHẬT KÝ LỘ TRÌNH
+                    </div>
+                    <div id="aiLogList" style="display: flex; flex-direction: column; gap: 6px;">
+                        <div style="font-size: 12px; color: #9e9e9e; font-style: italic;" id="emptyLogText">Chưa có cập nhật nào...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Route Info -->
+            <div class="info-block" style="margin-top: 12px;">
+                <div class="block-header">
+                    <span class="block-title">Green Bike</span>
+                    <a href="#" class="block-detail-link">Chi tiết <i class="fa-solid fa-chevron-right" style="font-size: 12px; margin-left: 4px;"></i></a>
+                </div>
+                
+                <div class="route-item" style="position: relative;">
+                    <div class="route-icon" style="position: relative; z-index: 2; background: #fff; padding-bottom: 4px;"><i class="fa-solid fa-circle-dot" style="color: #424242; font-size: 14px;"></i></div>
+                    <div class="route-text">
+                        <div class="route-title">Cổng Phụ - Trường Đại Học VinUni - Vinh...</div>
+                        <div class="route-subtitle">Xã Gia Lâm, Thành Phố Hà Nội, Việt Nam</div>
+                    </div>
+                    <div style="position: absolute; left: 6px; top: 18px; width: 2px; height: calc(100% + 4px); background-color: #e0e0e0; z-index: 1;"></div>
+                </div>
+                
+                <div class="route-item" style="position: relative; margin-top: 12px;">
+                    <div class="route-icon" style="position: relative; z-index: 2; background: #fff;"><i class="fa-solid fa-square" style="color: #ffca28; font-size: 14px;"></i></div>
+                    <div class="route-text">
+                        <div class="route-title">Nhà Hát Lớn Hà Nội</div>
+                        <div class="route-subtitle">15.2km • 1 Đường Tràng Tiền, Phường Cửa Nam,...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="info-block">
+                <div class="block-header">
+                    <span class="block-title">Thanh toán</span>
+                    <a href="#" class="block-detail-link">Chi tiết <i class="fa-solid fa-chevron-right" style="font-size: 12px; margin-left: 4px;"></i></a>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="background: #eedeef; width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center;">
+                            <i class="fa-solid fa-money-bill" style="color: #7e57c2; font-size: 14px;"></i>
+                        </div>
+                        <span style="font-size: 15px; font-weight: 500; color: #424242;">Tiền mặt</span>
+                    </div>
+                    <span style="font-size: 15px; font-weight: 600; color: #424242;">81.000đ</span>
+                </div>
+            </div>
+
+            <!-- Other Options -->
+            <div class="info-block" style="padding-bottom: 8px;">
+                <div class="block-title" style="margin-bottom: 16px;">Khác</div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-shield-halved" style="color: #757575; font-size: 18px;"></i>
+                        <span style="font-size: 15px; font-weight: 500; color: #424242;">Hỗ trợ an toàn chuyến</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color: #9e9e9e; font-size: 14px;"></i>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <i class="fa-solid fa-receipt" style="color: #757575; font-size: 18px; margin-top: 2px;"></i>
+                        <div>
+                            <div style="font-size: 15px; font-weight: 500; color: #424242; margin-bottom: 4px;">Yêu cầu xuất hoá đơn</div>
+                            <div style="font-size: 13px; color: #757575;">Xuất hoá đơn không có tên công ty.</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color: #9e9e9e; font-size: 14px;"></i>
+                </div>
+            </div>
+
+            <!-- Trip Action Buttons Container -->
+            <div id="trip-action-container" style="margin-top: 12px; margin-bottom: 16px; text-align: center;">
+                <span style="font-size: 16px; font-weight: 700; color: #212121; cursor: pointer;" onclick="window.location.href='booking.html'">Huỷ chuyến</span>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Simulation Script -->
+    <script>
+        // 20 Route announcements
+        const routeAnnouncements = [
+            "Bác tài đã bắt đầu di chuyển từ Cổng Phụ VinUni. AI Xanh SM xin chúc quý khách một chuyến đi an toàn và vui vẻ!",
+            "Xe đang di chuyển trên đường nội khu Đại học VinUni, chuẩn bị rẽ ra đại lộ Đại Dương.",
+            "Đã rẽ phải vào đại lộ Đại Dương. Tốc độ xe ổn định ở mức 40 kilômét trên giờ. Thời tiết hôm nay rất thuận lợi cho chuyến đi của bạn.",
+            "Chuẩn bị đi qua bùng binh Đại Dương, xe sẽ rẽ ra đường Lý Thánh Tông hướng về phía cao tốc.",
+            "Đang di chuyển trên đường Lý Thánh Tông. Phía trước có mật độ giao thông thưa thớt, xe đang di chuyển thông thoáng.",
+            "Xe chuẩn bị rẽ vào đường gom Đại lộ Vinhomes Ocean Park để đi về hướng cầu Vĩnh Tuy.",
+            "Hiện tại xe đang đi song song với đường cao tốc Hà Nội - Hải Phòng. Quý khách vui lòng thắt dây an toàn đầy đủ.",
+            "Chuẩn bị đi qua khu vực Đa Tốn. Quãng đường còn lại đến Nhà Hát Lớn là khoảng 12 kilômét.",
+            "Xe đã đi vào đường Cổ Linh. Đây là tuyến đường chính kết nối Quận Long Biên và Gia Lâm.",
+            "Đang di chuyển qua Aeon Mall Long Biên bên tay phải quý khách. Giao thông tại ngã tư Cổ Linh hiện tại ổn định.",
+            "Chuẩn bị lên cầu Vĩnh Tuy để vượt sông Hồng sang quận Hai Bà Trưng. Quý khách có thể ngắm nhìn sông Hồng bên tay phải.",
+            "Xe đang di chuyển trên cầu Vĩnh Tuy. Gió nhẹ, tốc độ xe đạt 50 kilômét trên giờ. Chúng ta đã đi được nửa chặng đường.",
+            "Đã đi hết cầu Vĩnh Tuy, xe chuẩn bị rẽ vào đường Minh Khai để hướng về trung tâm thành phố.",
+            "Đang di chuyển trên đường Minh Khai. Giao thông phía dưới hơi đông đúc nhưng xe chúng ta vẫn di chuyển tốt.",
+            "Chuẩn bị rẽ phải vào phố Kim Ngưu tại nút giao tiếp theo. Quý khách vui lòng chú ý hành lý cá nhân.",
+            "Xe đang đi dọc theo phố Kim Ngưu, chuẩn bị rẽ sang đường Trần Khát Chân.",
+            "Đã rẽ vào đường Trần Khát Chân. Quãng đường đến Nhà Hát Lớn Hà Nội còn lại khoảng 3 kilômét, dự kiến 5 phút nữa sẽ tới.",
+            "Xe chuẩn bị rẽ vào phố Lò Đúc. Phố Lò Đúc có nhiều cây sao đen cổ thụ tuyệt đẹp bên đường.",
+            "Đang di chuyển qua ngã năm Lò Đúc - Phan Chu Trinh. Chúng ta đang tiến rất gần đến phố Tràng Tiền.",
+            "Xe đã đi vào phố Tràng Tiền và đang tiến vào khu vực Nhà Hát Lớn Hà Nội. Điểm đến của quý khách ở phía trước. Cảm ơn quý khách đã đồng hành cùng Xanh SM!"
+        ];
+
+        let currentStep = 0; // 0: Approaching, 1: Arrived, 2: In-trip, 3: Completed
+        let announcementIndex = 0;
+        let announcementInterval = 1000; // 1s by default
+        let speechEnabled = true;
+        let timerId = null;
+        let ttsActive = false;
+
+        // Establish WebSocket Connection in driver_found.html
+        let foundSocket;
+        function initFoundWebSocket() {
+            try {
+                foundSocket = new WebSocket('ws://localhost:8001');
+                foundSocket.onopen = () => console.log('WebSocket connected on passenger tracking side.');
+                foundSocket.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        console.log('Passenger tracking received event:', data);
+                        if (data.type === 'pickup_confirmed') {
+                            if (currentStep === 1) {
+                                confirmPickup();
+                            }
+                        } else if (data.type === 'trip_completed') {
+                            if (currentStep === 2) {
+                                completeTrip();
+                            }
+                        } else if (data.type === 'simulation_reset') {
+                            // Reload tracking page to start fresh
+                            window.location.reload();
+                        }
+                    } catch (e) {
+                        console.error('Error parsing WebSocket message:', e);
+                    }
+                };
+                foundSocket.onclose = () => {
+                    console.log('WebSocket disconnected on passenger tracking side. Reconnecting...');
+                    setTimeout(initFoundWebSocket, 2000);
+                };
+                foundSocket.onerror = (err) => console.error('WebSocket error on passenger tracking side:', err);
+            } catch (e) {
+                console.error('WebSocket initialization failed in driver_found.html:', e);
+            }
+        }
+        initFoundWebSocket();
+
+        // Custom toast helper
+        function showToast(message, isCustom = false) {
+            const existing = document.querySelector('.toast-notif');
+            if (existing) {
+                existing.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-notif';
+            if (isCustom) {
+                toast.style.background = 'rgba(0, 188, 212, 0.95)';
+                toast.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                toast.style.boxShadow = '0 8px 24px rgba(0, 188, 212, 0.3)';
+            }
+            
+            toast.innerHTML = `
+                <div style="width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2);">
+                    <i class="fa-solid fa-robot" style="font-size: 10px;"></i>
+                </div>
+                <span style="flex: 1; text-align: left;">${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translate(-50%, -10px)';
+                    toast.style.transition = 'opacity 0.3s, transform 0.3s';
+                    setTimeout(() => {
+                        if (toast.parentNode) toast.remove();
+                    }, 300);
+                }
+            }, 4500);
+        }
+
+        // Text-to-Speech Voice Helper
+        function speakAI(text) {
+            if (!speechEnabled) return;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                
+                ttsActive = true;
+                const bars = document.querySelectorAll('.voice-bar');
+                bars.forEach(bar => bar.classList.add('speaking'));
+                document.getElementById('voiceStatusText').textContent = 'Đang nói...';
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'vi-VN';
+                utterance.rate = 1.0;
+                
+                utterance.onend = () => {
+                    ttsActive = false;
+                    bars.forEach(bar => bar.classList.remove('speaking'));
+                    document.getElementById('voiceStatusText').textContent = 'Đang nghe';
+                };
+                utterance.onerror = () => {
+                    ttsActive = false;
+                    bars.forEach(bar => bar.classList.remove('speaking'));
+                    document.getElementById('voiceStatusText').textContent = 'Sẵn sàng';
+                };
+                
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Toggle panel collapse/expand
+        function toggleSimPanel() {
+            const content = document.getElementById('simContent');
+            const icon = document.getElementById('simCollapseIcon');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.className = 'fa-solid fa-chevron-up';
+            } else {
+                content.style.display = 'none';
+                icon.className = 'fa-solid fa-chevron-down';
+            }
+        }
+
+        // Speed Adjustment
+        function setSpeed(seconds) {
+            announcementInterval = seconds * 1000;
+            document.querySelectorAll('.sim-speed-btn').forEach(btn => btn.classList.remove('active'));
+            if (seconds === 10) document.getElementById('speed10s').classList.add('active');
+            if (seconds === 3) document.getElementById('speed3s').classList.add('active');
+            if (seconds === 1) document.getElementById('speed1s').classList.add('active');
+            
+            // Re-schedule next announcement if currently in-trip
+            if (currentStep === 2 && timerId) {
+                clearTimeout(timerId);
+                timerId = setTimeout(playNextAnnouncement, announcementInterval);
+            }
+        }
+
+        // Toggle Audio Speech SpeechSynthesis
+        function toggleSpeech() {
+            speechEnabled = !speechEnabled;
+            const btn = document.getElementById('simPlayPauseBtn');
+            if (speechEnabled) {
+                btn.innerHTML = '<i class="fa-solid fa-pause"></i> Dừng đọc';
+                btn.classList.remove('sim-btn-secondary');
+                // Speak the current step or active announcement
+                if (currentStep === 1) {
+                    speakAI("Đã đến Cổng Phụ - Trường Đại Học VinUni. Vui lòng chuẩn bị lên xe!");
+                } else if (currentStep === 2 && announcementIndex > 0) {
+                    speakAI(routeAnnouncements[announcementIndex - 1]);
+                }
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-play"></i> Bật âm thanh';
+                btn.classList.add('sim-btn-secondary');
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+                const bars = document.querySelectorAll('.voice-bar');
+                bars.forEach(bar => bar.classList.remove('speaking'));
+                document.getElementById('voiceStatusText').textContent = 'Đã tắt tiếng';
+            }
+        }
+
+        // Skip to next announcement
+        function skipAnnouncement() {
+            if (currentStep !== 2) return;
+            if (timerId) {
+                clearTimeout(timerId);
+            }
+            playNextAnnouncement();
+        }
+
+        // Main Simulation State Machine
+        function triggerNextState() {
+            if (currentStep === 0) {
+                driverArrived();
+            } else if (currentStep === 1) {
+                confirmPickup();
+            } else if (currentStep === 2) {
+                completeTrip();
+            }
+        }
+
+        // Phase 1: Driver Arrived at Pickup
+        function driverArrived() {
+            currentStep = 1;
+            
+            // Update UI State Card
+            document.getElementById('status-text').innerHTML = 'Tài xế đã đến <span style="color: #4CAF50;">Cổng Phụ VinUni!</span>';
+            
+            // Show toast and speak
+            showToast("Tài xế đã đến! Vui lòng chuẩn bị lên xe.", true);
+            speakAI("Đã đến Cổng Phụ, Trường Đại Học VinUni. Vui lòng chuẩn bị lên xe!");
+            
+            // Update Simulation controls
+            document.getElementById('simStateText').textContent = 'Đã đến điểm đón';
+            document.getElementById('simStateText').style.color = '#4CAF50';
+            document.getElementById('simStateText').style.background = 'rgba(76, 175, 80, 0.1)';
+            document.getElementById('simMainBtn').innerHTML = '<i class="fa-solid fa-person-circle-check"></i> Xác nhận đón khách thành công';
+            document.getElementById('simMainBtn').style.background = '#2e7d32';
+            
+            // Update passenger trip actions: Show boarding confirmation button
+            document.getElementById('trip-action-container').innerHTML = `
+                <button class="sim-btn" style="background: #2e7d32; padding: 14px 20px; font-size: 15px; border-radius: 12px; margin-bottom: 10px;" onclick="confirmPickup()">
+                    <i class="fa-solid fa-person-circle-check"></i> Xác nhận đã lên xe
+                </button>
+                <div style="text-align: center;">
+                    <span style="font-size: 14px; font-weight: 600; color: #757575; cursor: pointer;" onclick="window.location.href='booking.html'">Huỷ chuyến</span>
+                </div>
+            `;
+            
+            // Auto boarding fallback in 30 seconds if WebSocket confirmation doesn't arrive
+            timerId = setTimeout(() => {
+                if (currentStep === 1) {
+                    console.log('WebSocket boarding fallback triggered.');
+                    confirmPickup();
+                }
+            }, 30000);
+        }
+
+        // Phase 2: Boarded / In-Trip
+        function confirmPickup() {
+            if (timerId) clearTimeout(timerId);
+            currentStep = 2;
+            
+            // Update UI State Card to In-trip mode
+            document.getElementById('status-text').style.display = 'none';
+            document.getElementById('route-progress-wrapper').style.display = 'block';
+            
+            // Show AI Assistant panel
+            document.getElementById('aiAssistantCard').style.display = 'flex';
+            
+            // Update bottom sheet buttons (No cancel button anymore)
+            document.getElementById('trip-action-container').innerHTML = `
+                <div style="display: flex; gap: 12px; padding: 0 4px;">
+                    <button style="flex: 1; border: 1.5px solid #ff5252; background: #ffebee; color: #d32f2f; border-radius: 12px; padding: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="alert('Đã gửi tín hiệu SOS khẩn cấp tới tổng đài Xanh SM và người thân!')">
+                        <i class="fa-solid fa-circle-exclamation"></i> SOS khẩn cấp
+                    </button>
+                    <button style="flex: 1; border: 1.5px solid #00bcd4; background: white; color: #00838f; border-radius: 12px; padding: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="alert('Đã sao chép liên kết chia sẻ lộ trình!')">
+                        <i class="fa-solid fa-share-nodes"></i> Chia sẻ lộ trình
+                    </button>
+                </div>
+            `;
+            
+            // Update simulation controls
+            document.getElementById('simStateText').textContent = 'Đang di chuyển';
+            document.getElementById('simStateText').style.color = '#00bcd4';
+            document.getElementById('simStateText').style.background = 'rgba(0, 188, 212, 0.1)';
+            
+            document.getElementById('simMainBtn').innerHTML = '<i class="fa-solid fa-circle-check"></i> Chuyển nhanh đến đích';
+            document.getElementById('simMainBtn').style.background = '#ff9800';
+            
+            document.getElementById('simPlayPauseBtn').removeAttribute('disabled');
+            document.getElementById('simSkipBtn').removeAttribute('disabled');
+            
+            // Start route announcements
+            speakAI("Tài xế Nguyễn Sỹ Cường đã xác nhận đón khách thành công. Bắt đầu hành trình đến Nhà Hát Lớn Hà Nội.");
+            
+            // Remove "empty log text"
+            const emptyLog = document.getElementById('emptyLogText');
+            if (emptyLog) emptyLog.remove();
+            
+            announcementIndex = 0;
+            // Delay first announcement slightly to let introductory audio finish
+            timerId = setTimeout(playNextAnnouncement, 2000);
+        }
+
+        // Loop through the 20 announcements
+        function playNextAnnouncement() {
+            if (currentStep !== 2) return;
+            
+            if (announcementIndex < routeAnnouncements.length) {
+                const text = routeAnnouncements[announcementIndex];
+                
+                // 1. Show floating custom toast
+                showToast(`AI: ${text}`, true);
+                
+                // 2. Update AI assistant card bubble
+                document.getElementById('aiMessageBubble').innerHTML = text;
+                
+                // 3. Add to route log
+                const logList = document.getElementById('aiLogList');
+                const logItem = document.createElement('div');
+                logItem.style.fontSize = '12px';
+                logItem.style.color = '#455a64';
+                logItem.style.padding = '4px 8px';
+                logItem.style.background = 'white';
+                logItem.style.borderRadius = '6px';
+                logItem.style.borderLeft = '3px solid #00bcd4';
+                logItem.style.lineHeight = '1.4';
+                logItem.innerHTML = `<span style="font-weight: 700; color: #00838f;">Cập nhật ${announcementIndex + 1}:</span> ${text}`;
+                logList.appendChild(logItem);
+                
+                // Auto scroll log to bottom
+                const logContainer = document.getElementById('aiLogContainer');
+                logContainer.scrollTop = logContainer.scrollHeight;
+                
+                // 4. Update ETA & Progress bar
+                const progressPercent = Math.round(((announcementIndex + 1) / routeAnnouncements.length) * 100);
+                document.getElementById('routeProgressBar').style.width = `${progressPercent}%`;
+                
+                const remainingMins = Math.max(1, Math.round(25 - (announcementIndex + 1) * 1.25));
+                document.getElementById('eta-trip-text').textContent = `Dự kiến đến: ${remainingMins} phút`;
+                
+                // 5. Speech Synthesis
+                speakAI(text);
+                
+                // Update simulation main button progress
+                document.getElementById('simMainBtn').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Lộ trình: ${announcementIndex + 1}/20 (Bỏ qua)`;
+                
+                announcementIndex++;
+                
+                // Schedule next
+                timerId = setTimeout(playNextAnnouncement, announcementInterval);
+            } else {
+                completeTrip();
+            }
+        }
+
+        // Phase 3: Trip Completed
+        function completeTrip() {
+            if (timerId) clearTimeout(timerId);
+            currentStep = 3;
+            
+            // Update status card
+            document.getElementById('route-progress-wrapper').style.display = 'none';
+            document.getElementById('status-text').style.display = 'block';
+            document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check" style="color: #4CAF50;"></i> Bạn đã đến <span style="color: #00bcd4;">Nhà Hát Lớn Hà Nội</span>';
+            
+            // Update AI Assistant UI
+            document.getElementById('aiStatusBadge').textContent = 'Hoàn thành';
+            document.getElementById('aiStatusBadge').style.background = 'rgba(76, 175, 80, 0.1)';
+            document.getElementById('aiStatusBadge').style.color = '#2e7d32';
+            document.getElementById('aiMessageBubble').innerHTML = 'Tài xế Nguyễn Sỹ Cường đã xác nhận hoàn thành chuyến đi. Số tiền 81.000đ đã được tự động trừ trong ví Xanh Pay của bạn. Cảm ơn quý khách!';
+            
+            // Speak completion
+            speakAI("Tài xế Nguyễn Sỹ Cường đã xác nhận hoàn thành chuyến đi. Số tiền 81 nghìn đồng đã được trừ trong ví Xanh Pay của bạn. Cảm ơn bạn đã lựa chọn Xanh SM!");
+            
+            // Update Simulation controls
+            document.getElementById('simStateText').textContent = 'Đã hoàn thành';
+            document.getElementById('simStateText').style.color = '#2e7d32';
+            document.getElementById('simStateText').style.background = 'rgba(76, 175, 80, 0.1)';
+            
+            document.getElementById('simMainBtn').innerHTML = '<i class="fa-solid fa-rotate-left"></i> Thiết lập lại giả lập';
+            document.getElementById('simMainBtn').style.background = '#607d8b';
+            
+            document.getElementById('simPlayPauseBtn').setAttribute('disabled', 'true');
+            document.getElementById('simSkipBtn').setAttribute('disabled', 'true');
+            
+            // Change passenger trip actions to Go Home button
+            document.getElementById('trip-action-container').innerHTML = `
+                <button class="sim-btn" style="background: #00bcd4; padding: 14px 20px; font-size: 15px; border-radius: 12px; margin-bottom: 10px;" onclick="resetSimulation()">
+                    <i class="fa-solid fa-house"></i> Quay lại trang chủ
+                </button>
+            `;
+        }
+
+        // Reset the simulation to beginning
+        function resetSimulation() {
+            if (timerId) clearTimeout(timerId);
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            window.location.href = 'index.html';
+        }
+
+        // On page load - Simulate driver coming
+        window.addEventListener('DOMContentLoaded', () => {
+            currentStep = 0;
+            
+            // Update ETA counting down in approaching phase
+            let countdown = 10;
+            const etaSpan = document.getElementById('eta-minutes');
+            
+            const countdownInterval = setInterval(() => {
+                if (currentStep !== 0) {
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                countdown--;
+                if (countdown > 5) {
+                    etaSpan.textContent = '2 phút';
+                } else if (countdown > 0) {
+                    etaSpan.textContent = '1 phút';
+                } else {
+                    clearInterval(countdownInterval);
+                    driverArrived();
+                }
+            }, 600); // Quick simulation of approaching
+        });
+    </script>
+</body>
+</html>

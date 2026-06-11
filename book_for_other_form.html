@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xanh SM - Đặt hộ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="margin: 0; background-color: #f4f4f4; display: flex; flex-direction: column; height: 100vh; font-family: 'Inter', sans-serif;">
+
+    <!-- Top Header -->
+    <div style="background-color: #ffffff; padding: 16px 20px; display: flex; align-items: center; position: sticky; top: 0; z-index: 10;">
+        <button onclick="window.location.href='book_for_other.html'" style="background: #fff; width: 44px; height: 44px; border-radius: 12px; border: 1px solid #f0f0f0; display: flex; justify-content: center; align-items: center; cursor: pointer; padding: 0;">
+            <i class="fa-solid fa-arrow-left" style="color: #424242; font-size: 20px;"></i>
+        </button>
+        <h1 style="flex: 1; text-align: center; font-size: 18px; font-weight: 700; color: #212121; margin: 0; padding-right: 44px;">Đặt hộ</h1>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div style="flex: 1; overflow-y: auto; padding: 16px;">
+        
+        <!-- Input Form Card -->
+        <div style="background: #ffffff; border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            
+            <!-- Name Input -->
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 12px;">Tên người đi xe</label>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input type="text" id="riderName" placeholder="Nhập tên người đi xe" style="width: 100%; padding: 18px 48px 18px 16px; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 16px; color: #424242; outline: none; font-family: 'Inter', sans-serif; box-sizing: border-box;" oninput="checkForm()">
+                    <div style="position: absolute; right: 16px; width: 28px; height: 28px; background: #6b7280; border-radius: 6px; display: flex; justify-content: center; align-items: center;">
+                        <i class="fa-solid fa-address-card" style="color: #ffffff; font-size: 14px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone Input -->
+            <div>
+                <label style="display: block; font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 12px;">Số điện thoại</label>
+                <input type="tel" id="riderPhone" placeholder="Nhập số điện thoại liên hệ" style="width: 100%; padding: 18px 16px; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 16px; color: #424242; outline: none; font-family: 'Inter', sans-serif; box-sizing: border-box;" oninput="checkForm()">
+            </div>
+            
+        </div>
+
+        <!-- Saved List Card -->
+        <div style="background: #ffffff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); text-align: center; display: flex; flex-direction: column;">
+            <h2 style="font-size: 18px; font-weight: 700; color: #212121; margin: 0 0 16px; text-align: left;">Danh sách đã lưu</h2>
+            
+            <!-- Fallback Image (Quota Exceeded) -->
+            <div style="width: 100%; max-width: 320px; height: 220px; margin: 0 auto 16px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                <img src="assets/3d_booking_for_others_hero.png" alt="Family" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+
+            <p style="font-size: 15px; color: #757575; line-height: 1.5; margin: 0 0 24px; padding: 0 16px;">
+                Thêm thành viên vào danh sách đã lưu để đặt nhanh hơn.
+            </p>
+
+            <button style="background: none; border: none; color: #31d1c4; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; width: 100%; gap: 10px; cursor: pointer; padding-bottom: 12px;">
+                <i class="fa-solid fa-user-plus"></i> Thêm thành viên
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Bottom Action Bar -->
+    <div style="background: #ffffff; padding: 16px 24px 32px; box-shadow: 0 -4px 12px rgba(0,0,0,0.03);">
+        <button id="submitBtn" style="width: 100%; padding: 16px; border-radius: 12px; background: #f4f4f4; color: #a1a1aa; font-size: 16px; font-weight: 700; border: none; cursor: not-allowed; font-family: 'Inter', sans-serif;">
+            Xong
+        </button>
+    </div>
+
+    <script>
+        function checkForm() {
+            var name = document.getElementById('riderName').value.trim();
+            var phone = document.getElementById('riderPhone').value.trim();
+            var btn = document.getElementById('submitBtn');
+            
+            if (name !== '' && phone !== '') {
+                btn.style.background = '#31d1c4';
+                btn.style.color = '#ffffff';
+                btn.style.cursor = 'pointer';
+                btn.onclick = function() {
+                    window.location.href = 'booking_for_other.html';
+                };
+            } else {
+                btn.style.background = '#f4f4f4';
+                btn.style.color = '#a1a1aa';
+                btn.style.cursor = 'not-allowed';
+                btn.onclick = null;
+            }
+        }
+    </script>
+
+</body>
+</html>

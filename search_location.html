@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xanh SM - Tìm kiếm địa điểm</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-color: #ffffff;">
+
+    <div class="search-location-container">
+        <!-- Header -->
+        <header class="search-header" style="display: flex; gap: 16px; padding: 16px 20px 0; align-items: stretch;">
+            <div style="margin-top: 12px;">
+                <button class="btn-back" style="margin: 0;" onclick="window.location.href='index.html'"><i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+            
+            <div class="search-inputs-area" style="flex: 1; display: flex; flex-direction: column; position: relative; padding-bottom: 0;">
+                <div class="search-input-wrapper" style="margin-bottom: 12px;">
+                    <i class="fa-solid fa-circle" style="color: #424242; font-size: 10px;"></i>
+                    <input type="text" value="Cổng Phụ - Trường Đại Học Vin..." readonly>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                    <div id="dest-wrapper" class="search-input-wrapper search-dest" style="flex: 1; margin-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; flex: 1;">
+                            <i class="fa-solid fa-square" style="color: #ffca28; font-size: 12px;"></i>
+                            <input id="dest-input" type="text" placeholder="Bạn muốn đi đâu?" class="active-input" onfocus="handleSearchFocus()" style="width: 100%;">
+                        </div>
+                        <i id="clear-icon" class="fa-solid fa-circle-xmark" style="color: #9e9e9e; display: none; cursor: pointer;" onclick="document.getElementById('dest-input').value=''"></i>
+                    </div>
+                </div>
+                <div class="search-line-connector" style="left: 20px; top: 30px; bottom: 44px;"></div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-bottom: 12px;">
+                <div class="region-indicator" style="margin: 6px 0 0 0;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN">
+                    <span>Hà Nội</span>
+                </div>
+                <button class="btn-add-stop" style="width: 44px; height: 44px; border-radius: 12px; font-size: 18px;"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </header>
+
+        <div class="spacer" style="height: 10px; background: #f9f9f9; width: 100vw; margin-left: -20px; margin-bottom: 10px;"></div>
+
+        <!-- Location List -->
+        <div id="location-list" class="location-list">
+            <!-- Item 1 -->
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-regular fa-building"></i>
+                    <span class="loc-distance">526,7 m</span>
+                </div>
+                <div class="loc-info">
+                    <h4>Tòa S2.09 - The Sapphire 2 - Vinhomes Ocean Park</h4>
+                    <p>Đại Dương 1, Xã Gia Lâm, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="loc-distance">1,2 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4>35 Đình An Đào</h4>
+                    <p>Đình An Đào, 35, Xã Bát Tràng, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="loc-distance">1,6 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4>Nhà thờ Xuân Thủy</h4>
+                    <p>Ngách 35 Ngõ 24 Thôn Xuân Thụy, Xã Gia Lâm, Thành phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="loc-distance">10,9 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4>Nhà Thờ Lớn Hà Nội</h4>
+                    <p>40 Phố Nhà Chung, Phường Hoàn Kiếm, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-bus-simple"></i>
+                    <span class="loc-distance">11 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4>Bến Xe Nước Ngầm</h4>
+                    <p>1 Đường Ngọc Hồi, Phường Yên Sở, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-shop"></i>
+                    <span class="loc-distance">6,5 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4>Aeon Mall Long Biên</h4>
+                    <p>27 Cổ Linh, Phường Long Biên, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skeleton List (Hidden by default) -->
+        <div id="skeleton-list" class="skeleton-list">
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+        </div>
+
+        <!-- Search Results List (Hidden by default) -->
+        <div id="search-results-list" class="location-list" style="display: none; padding-bottom: 24px;">
+            <div class="location-item" onclick="window.location.href='map_pickup.html'" style="cursor: pointer;">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span class="loc-distance">9,9 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4><span class="text-highlight">Nhà</span> Hát Lớn Hà Nội</h4>
+                    <p>1 Đường Tràng Tiền, Phường Cửa Nam, Thành phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span class="loc-distance">741,1 m</span>
+                </div>
+                <div class="loc-info">
+                    <h4><span class="text-highlight">Nhà</span> Để Xe Hải Đăng - The Sapphire 1 - Vinhomes Ocean P...</h4>
+                    <p>Đường Hải Đăng, Xã Gia Lâm, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <div class="location-item" style="border-bottom: none; padding-bottom: 8px;">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span class="loc-distance">3,3 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4><span class="text-highlight">Nhà</span> Thi Đấu Gia Lâm</h4>
+                    <p>453 Đường Nguyễn Đức Thuận, Xã Gia Lâm, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+            </div>
+
+            <div class="location-item" style="padding-left: 56px; padding-top: 8px; border-bottom: none;">
+                <div class="loc-icon-wrapper" style="width: 24px; margin-right: 12px;">
+                    <i class="fa-solid fa-location-dot" style="font-size: 14px;"></i>
+                </div>
+                <div class="loc-info">
+                    <h4 style="font-size: 14px;">Cổng Phụ - <span class="text-highlight">Nhà</span> Thi Đấu Gia Lâm</h4>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <div class="location-item" style="padding-left: 56px; padding-top: 8px;">
+                <div class="loc-icon-wrapper" style="width: 24px; margin-right: 12px;">
+                    <i class="fa-solid fa-location-dot" style="font-size: 14px;"></i>
+                </div>
+                <div class="loc-info">
+                    <h4 style="font-size: 14px;">Cổng Chính - <span class="text-highlight">Nhà</span> Thi Đấu Gia Lâm</h4>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <div class="location-item">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span class="loc-distance">10,9 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4><span class="text-highlight">Nhà</span> Thờ Lớn Hà Nội</h4>
+                    <p>40 Phố <span class="text-highlight">Nhà</span> Chung, Phường Hoàn Kiếm, Thành Phố Hà Nội, Việt Nam</p>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <div class="location-item" style="border-bottom: none; padding-bottom: 8px;">
+                <div class="loc-icon-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span class="loc-distance">10,1 km</span>
+                </div>
+                <div class="loc-info">
+                    <h4><span class="text-highlight">Nhà</span> Thờ Giáo Xứ Hàm Long</h4>
+                    <p>21 Phố Hàm Long, Phường Cửa Nam, Thành phố Hà Nội, Việt Nam</p>
+                </div>
+            </div>
+
+            <div class="location-item" style="padding-left: 56px; padding-top: 8px; border-bottom: none;">
+                <div class="loc-icon-wrapper" style="width: 24px; margin-right: 12px;">
+                    <i class="fa-solid fa-location-dot" style="font-size: 14px;"></i>
+                </div>
+                <div class="loc-info">
+                    <h4 style="font-size: 14px;">Cổng Ngô Thì <span class="text-highlight">Nhậm</span> - Nhà Thờ Giáo Xứ Hàm Long</h4>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+            
+            <div class="location-item" style="padding-left: 56px; padding-top: 8px;">
+                <div class="loc-icon-wrapper" style="width: 24px; margin-right: 12px;">
+                    <i class="fa-solid fa-location-dot" style="font-size: 14px;"></i>
+                </div>
+                <div class="loc-info">
+                    <h4 style="font-size: 14px;">Cổng Phố Hàm Long - <span class="text-highlight">Nhà</span> Thờ Giáo Xứ Hàm Long</h4>
+                </div>
+                <div class="loc-actions">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="spacer" style="height: 10px;"></div>
+
+        <!-- Bottom Actions -->
+        <div id="bottom-actions" class="search-bottom-actions">
+            <div class="menu-item border-top">
+                <div class="loc-icon-wrapper circle-bg-red">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div class="loc-info">
+                    <h4>Địa chỉ đã lưu</h4>
+                    <p>Lưu địa chỉ để đặt xe nhanh hơn.</p>
+                </div>
+                <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </div>
+            
+            <div class="menu-item border-top">
+                <div class="loc-icon-wrapper circle-bg-gray">
+                    <i class="fa-solid fa-map"></i>
+                </div>
+                <div class="loc-info">
+                    <h4>Tìm trên bản đồ</h4>
+                </div>
+                <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </div>
+            
+            <div class="menu-item border-top">
+                <div class="loc-icon-wrapper circle-bg-gray">
+                    <i class="fa-regular fa-lightbulb"></i>
+                </div>
+                <div class="loc-info">
+                    <h4>Hiển thị địa chỉ sau sáp nhập tỉnh</h4>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        function handleSearchFocus() {
+            // Show border and clear icon, and put text 'nhà'
+            document.getElementById('dest-wrapper').classList.add('active-border');
+            document.getElementById('clear-icon').style.display = 'block';
+            document.getElementById('dest-input').value = 'nhà';
+
+            // Show skeleton list
+            document.getElementById('location-list').style.display = 'none';
+            document.getElementById('bottom-actions').style.display = 'none';
+            document.getElementById('skeleton-list').style.display = 'block';
+
+            // After 2 seconds, hide skeleton and show search results
+            setTimeout(() => {
+                document.getElementById('skeleton-list').style.display = 'none';
+                document.getElementById('search-results-list').style.display = 'block';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

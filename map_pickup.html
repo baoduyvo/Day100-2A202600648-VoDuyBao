@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xanh SM - Chọn điểm đón</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="margin: 0; overflow: hidden; background-color: #f4f4f4;">
+
+    <div class="map-view-container">
+        <!-- Map Area -->
+        <div class="map-area">
+            <!-- Google Map Embed -->
+            <div class="map-background" style="pointer-events: auto;">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    marginheight="0" 
+                    marginwidth="0" 
+                    src="https://maps.google.com/maps?q=C%E1%BB%95ng%20ph%E1%BB%A5%20%C4%90%E1%BA%A1i%20H%E1%BB%8Dc%20VinUni,%20Gia%20L%C3%A2m,%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+            
+            <!-- Top Controls -->
+            <div class="map-top-controls">
+                <button class="btn-back map-btn-back" onclick="window.location.href='search_location.html'"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="map-search-bar" onclick="window.location.href='search_location.html'">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #424242;"></i>
+                    <span style="color: #000; font-weight: 600;">Tìm kiếm</span>
+                </div>
+            </div>
+
+            <!-- Custom Marker -->
+            <div class="map-marker-center">
+                <div class="marker-tooltip">Điểm đón ưu tiên</div>
+                <div class="marker-pin-wrapper">
+                    <i class="fa-solid fa-location-dot" style="color: #424242; font-size: 36px;"></i>
+                    <div class="marker-blue-dot"></div>
+                </div>
+            </div>
+
+            <!-- GPS Button -->
+            <button class="map-btn-gps"><i class="fa-solid fa-crosshairs"></i></button>
+        </div>
+
+        <!-- Bottom Sheet -->
+        <div class="pickup-bottom-sheet">
+            <div class="sheet-drag-handle"></div>
+            
+            <h2 class="sheet-title">Đại học VinUniversity - Vinhome Ocean Park</h2>
+            
+            <div class="gates-list">
+                <!-- Item 1 (Active) -->
+                <div class="gate-item active">
+                    <div class="gate-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span class="gate-distance">269,3 m</span>
+                    </div>
+                    <div class="gate-info">
+                        <h4>Cổng Phụ - Trường Đại Học VinUni - Vinhomes Ocean Park</h4>
+                        <p>Xã Gia Lâm, Thành Phố Hà Nội, Việt Nam</p>
+                        <div class="gate-badge"><i class="fa-solid fa-star"></i> 86% khách chọn điểm này</div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="gate-item">
+                    <div class="gate-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span class="gate-distance">332 m</span>
+                    </div>
+                    <div class="gate-info">
+                        <h4>Cổng Kí Túc Xá - Trường Đại Học VinUni - Vinhomes Ocean Park</h4>
+                        <p>Xã Gia Lâm, Thành Phố Hà Nội, Việt Nam</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="gate-item" style="border-bottom: none;">
+                    <div class="gate-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div class="gate-info">
+                        <h4>Cổng Chính - Trường Đại Học VinUni -</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note-input-wrapper">
+                <input type="text" placeholder="Thêm ghi chú cho bác tài (ví dụ: gần cổng)." class="note-input">
+            </div>
+
+            <div class="bottom-fixed-action">
+                <button class="btn-primary" onclick="window.location.href='booking.html'" style="border-radius: 12px;">Chọn điểm đón này</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
