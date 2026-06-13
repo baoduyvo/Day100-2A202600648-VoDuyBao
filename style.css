@@ -396,8 +396,8 @@ body {
     right: 20px;
     bottom: calc(94px + env(safe-area-inset-bottom));
     /* 20px nav-bottom + 64px nav-height + 10px gap */
-    width: 200px;
-    height: 200px;
+    width: 70px;
+    height: 70px;
     background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #a18cd1 100%);
     border-radius: 50%;
     display: flex;
@@ -463,8 +463,8 @@ body {
 }
 
 .right-circle-btn img {
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
     border-radius: 50%;
     pointer-events: none;

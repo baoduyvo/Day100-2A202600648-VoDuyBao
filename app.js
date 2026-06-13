@@ -889,22 +889,7 @@ window.confirmPickupLocation = function() {
     const thinkingRoute = showAiThinking(textBoard);
     setTimeout(() => {
         thinkingRoute.remove();
-        const actionBubble = document.createElement('div');
-        actionBubble.style.alignSelf = 'center';
-        actionBubble.style.background = '#e8f5e9';
-        actionBubble.style.color = '#2e7d32';
-        actionBubble.style.padding = '6px 12px';
-        actionBubble.style.borderRadius = '20px';
-        actionBubble.style.fontSize = '13px';
-        actionBubble.style.marginTop = '8px';
-        actionBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="margin-right: 4px;"></i> Đang tìm kiếm lộ trình...`;
-        textBoard.appendChild(actionBubble);
-        speakAI("Đang tìm kiếm lộ trình.");
-
-        setTimeout(() => {
-            actionBubble.remove();
-            getTripRouteInfo("Cổng Phụ - Trường Đại Học VinUni", "15.2 km", "54.000đ");
-        }, 1500);
+        getTripRouteInfo("Cổng Phụ - Trường Đại Học VinUni", "15.2 km", "54.000đ");
     }, 1000);
 };
 
@@ -1017,29 +1002,13 @@ window.selectAlternativePickup = function(name, dist, price) {
     const thinkingUpdate = showAiThinking(textBoard);
     setTimeout(() => {
         thinkingUpdate.remove();
-        const updateBubble = document.createElement('div');
-        updateBubble.style.alignSelf = 'center';
-        updateBubble.style.background = '#e8f5e9';
-        updateBubble.style.color = '#2e7d32';
-        updateBubble.style.padding = '10px 16px';
-        updateBubble.style.borderRadius = '20px';
-        updateBubble.style.fontSize = '15px';
-        updateBubble.style.marginTop = '8px';
-        updateBubble.style.fontWeight = '600';
-        updateBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="margin-right: 4px;"></i> Đang cập nhật lộ trình...`;
-        textBoard.appendChild(updateBubble);
-        speakAI("Đang cập nhật lộ trình mới.");
-
-        setTimeout(() => {
-            updateBubble.remove();
-            window.currentPickupLocation = name;
-            // Send websocket event
-            if (appSocket && appSocket.readyState === WebSocket.OPEN) {
-                appSocket.send(JSON.stringify({ type: 'pickup_changed', location: name, dist: dist }));
-            }
-            const destLoc = window.currentDestinationLocation || "Nhà hát lớn Hà Nội";
-            getTripRouteInfo(name, dist, price, destLoc);
-        }, 1500);
+        window.currentPickupLocation = name;
+        // Send websocket event
+        if (appSocket && appSocket.readyState === WebSocket.OPEN) {
+            appSocket.send(JSON.stringify({ type: 'pickup_changed', location: name, dist: dist }));
+        }
+        const destLoc = window.currentDestinationLocation || "Nhà hát lớn Hà Nội";
+        getTripRouteInfo(name, dist, price, destLoc);
     }, 1000);
 };
 
@@ -1149,112 +1118,20 @@ window.selectAlternativeDestination = function(name, dist, price) {
     const thinkingDestUpdate = showAiThinking(textBoard);
     setTimeout(() => {
         thinkingDestUpdate.remove();
-        const updateBubble = document.createElement('div');
-        updateBubble.style.alignSelf = 'center';
-        updateBubble.style.background = '#e8f5e9';
-        updateBubble.style.color = '#2e7d32';
-        updateBubble.style.padding = '6px 12px';
-        updateBubble.style.borderRadius = '20px';
-        updateBubble.style.fontSize = '13px';
-        updateBubble.style.marginTop = '8px';
-        updateBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="margin-right: 4px;"></i> Đang cập nhật lộ trình...`;
-        textBoard.appendChild(updateBubble);
-        speakAI("Đang cập nhật lộ trình mới.");
-
-        setTimeout(() => {
-            updateBubble.remove();
-            window.currentDestinationLocation = name;
-            // Send websocket event
-            if (appSocket && appSocket.readyState === WebSocket.OPEN) {
-                appSocket.send(JSON.stringify({ type: 'destination_changed', location: name, dist: dist }));
-            }
-            const pickupLoc = window.currentPickupLocation || "Cổng Phụ - Trường Đại Học VinUni";
-            getTripRouteInfo(pickupLoc, dist, price, name);
-        }, 1500);
+        window.currentDestinationLocation = name;
+        // Send websocket event
+        if (appSocket && appSocket.readyState === WebSocket.OPEN) {
+            appSocket.send(JSON.stringify({ type: 'destination_changed', location: name, dist: dist }));
+        }
+        const pickupLoc = window.currentPickupLocation || "Cổng Phụ - Trường Đại Học VinUni";
+        getTripRouteInfo(pickupLoc, dist, price, name);
     }, 1000);
 };
 
 window.getTripRouteInfo = function(pickupLoc = "Cổng Phụ - Trường Đại Học VinUni", dist = "15.2 km", price = "54.000đ", destinationLoc = "Nhà hát lớn Hà Nội") {
     window.currentDistance = dist;
     window.currentPrice = price;
-    const textBoard = document.getElementById('ai-user-text');
-
-    const aiBubbleInfo = document.createElement('div');
-    aiBubbleInfo.style.alignSelf = 'flex-start';
-    aiBubbleInfo.style.background = '#ffffff';
-    aiBubbleInfo.style.border = '2px solid #e0f6f4';
-    aiBubbleInfo.style.padding = '16px 18px';
-    aiBubbleInfo.style.borderRadius = '20px 20px 20px 0';
-    aiBubbleInfo.style.maxWidth = '95%';
-    aiBubbleInfo.style.marginBottom = '12px';
-    aiBubbleInfo.style.boxShadow = '0 6px 16px rgba(0,0,0,0.08)';
-
-    aiBubbleInfo.innerHTML = `
-        <div style="color: #00bcd4; margin-bottom: 16px; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 8px;">
-            <i class="fa-solid fa-robot" style="font-size: 20px;"></i>
-            <span>AI: Thông tin lộ trình của bạn:</span>
-        </div>
-        <div style="font-family: 'Inter', sans-serif; line-height: 1.5;">
-            <!-- Clickable Pickup target -->
-            <div onclick="showPickupAlternatives()" style="display: flex; align-items: center; justify-content: space-between; background-color: #f5fdfc; border: 2px solid #00bcd4; padding: 14px 16px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: background-color 0.2s;">
-                <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                    <i class="fa-solid fa-circle-dot" style="color: #00bcd4; font-size: 18px; width: 20px; text-align: center;"></i>
-                    <div>
-                        <span style="color: #555; font-size: 13px; font-weight: 500; display: block;">Điểm đón (Bấm để sửa)</span>
-                        <b style="color: #111; font-size: 16px; display: block; margin-top: 2px;">${pickupLoc}</b>
-                    </div>
-                </div>
-                <div style="background-color: #00bcd4; color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <i class="fa-solid fa-pen" style="font-size: 14px;"></i>
-                </div>
-            </div>
-
-            <!-- Clickable Destination target -->
-            <div onclick="showDestinationAlternatives()" style="display: flex; align-items: center; justify-content: space-between; background-color: #fffde7; border: 2px solid #ffca28; padding: 14px 16px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: background-color 0.2s;">
-                <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                    <i class="fa-solid fa-location-dot" style="color: #f57f17; font-size: 18px; width: 20px; text-align: center;"></i>
-                    <div>
-                        <span style="color: #555; font-size: 13px; font-weight: 500; display: block;">Điểm đến (Bấm để sửa)</span>
-                        <b style="color: #111; font-size: 16px; display: block; margin-top: 2px;">${destinationLoc}</b>
-                    </div>
-                </div>
-                <div style="background-color: #ffca28; color: #5d4037; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <i class="fa-solid fa-pen" style="font-size: 14px;"></i>
-                </div>
-            </div>
-
-            <!-- Route distance and price -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 1px dashed #e0e0e0; gap: 12px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-route" style="color: #78909c; font-size: 18px;"></i>
-                    <div style="text-align: left;">
-                        <span style="color: #666; font-size: 12px; display: block;">Quãng đường</span>
-                        <b style="color: #212121; font-size: 16px;">${dist}</b>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 8px; text-align: right;">
-                    <div style="text-align: right;">
-                        <span style="color: #666; font-size: 12px; display: block;">Giá tiền</span>
-                        <b style="color: #d32f2f; font-size: 20px;">${price}</b>
-                    </div>
-                    <i class="fa-solid fa-money-bill-wave" style="color: #2e7d32; font-size: 18px;"></i>
-                </div>
-            </div>
-        </div>
-    `;
-    textBoard.appendChild(aiBubbleInfo);
-    
-    textBoard.scrollTop = textBoard.scrollHeight;
-
-    const distTextForSpeech = dist.replace('.', ' phẩy ');
-    const priceTextForSpeech = price.replace('.000đ', ' nghìn đồng');
-    speakAI(`Thông tin chuyến đi của bạn. Vị trí của bạn: ${pickupLoc}. Vị trí đến: ${destinationLoc}. Số ki lô mét: ${distTextForSpeech}. Giá chuyến đi: ${priceTextForSpeech}.`);
-
-    // Tự động mở popup xác nhận sau khi AI đọc xong lộ trình (khoảng 10 giây)
-    if (window.aiBookingConfirmTimer) clearTimeout(window.aiBookingConfirmTimer);
-    window.aiBookingConfirmTimer = setTimeout(() => {
-        window.showAiBookingConfirmPopup(pickupLoc, dist, price, destinationLoc);
-    }, 10000);
+    window.showAiBookingConfirmPopup(pickupLoc, dist, price, destinationLoc);
 };
 
 window.confirmTripBooking = function() {
@@ -1521,24 +1398,24 @@ function finalizeBooking(pickupLoc, dist, price, destinationLoc) {
 
                 const routeAnnouncements = [
                     "Bác tài đã bắt đầu di chuyển từ Cổng Phụ VinUni. AI Xanh SM xin chúc quý khách một chuyến đi an toàn và vui vẻ!",
-                    "Xe đang di chuyển trên đường nội khu Đại học VinUni, chuẩn bị rẽ ra đại lộ Đại Dương.",
-                    "Đã rẽ phải vào đại lộ Đại Dương. Tốc độ xe ổn định ở mức 40 kilômét trên giờ. Thời tiết hôm nay rất thuận lợi cho chuyến đi của bạn.",
-                    "Chuẩn bị đi qua bùng binh Đại Dương, xe sẽ rẽ ra đường Lý Thánh Tông hướng về phía cao tốc.",
-                    "Đang di chuyển trên đường Lý Thánh Tông. Phía trước có mật độ giao thông thưa thớt, xe đang di chuyển thông thoáng.",
-                    "Xe chuẩn bị rẽ vào đường gom Đại lộ Vinhomes Ocean Park để đi về hướng cầu Vĩnh Tuy.",
-                    "Hiện tại xe đang đi song song với đường cao tốc Hà Nội - Hải Phòng. Quý khách vui lòng thắt dây an toàn đầy đủ.",
-                    "Chuẩn bị đi qua khu vực Đa Tốn. Quãng đường còn lại đến Nhà Hát Lớn là khoảng 12 kilômét.",
-                    "Xe đã đi vào đường Cổ Linh. Đây là tuyến đường chính kết nối Quận Long Biên và Gia Lâm.",
-                    "Đang di chuyển qua Aeon Mall Long Biên bên tay phải quý khách. Giao thông tại ngã tư Cổ Linh hiện tại ổn định.",
-                    "Chuẩn bị lên cầu Vĩnh Tuy để vượt sông Hồng sang quận Hai Bà Trưng. Quý khách có thể ngắm nhìn sông Hồng bên tay phải.",
-                    "Xe đang di chuyển trên cầu Vĩnh Tuy. Gió nhẹ, tốc độ xe đạt 50 kilômét trên giờ. Chúng ta đã đi được nửa chặng đường.",
-                    "Đã đi hết cầu Vĩnh Tuy, xe chuẩn bị rẽ vào đường Minh Khai để hướng về trung tâm thành phố.",
-                    "Đang di chuyển trên đường Minh Khai. Giao thông phía dưới hơi đông đúc nhưng xe chúng ta vẫn di chuyển tốt.",
-                    "Chuẩn bị rẽ phải vào phố Kim Ngưu tại nút giao tiếp theo. Quý khách vui lòng chú ý hành lý cá nhân.",
-                    "Xe đang đi dọc theo phố Kim Ngưu, chuẩn bị rẽ sang đường Trần Khát Chân.",
-                    "Đã rẽ vào đường Trần Khát Chân. Quãng đường đến Nhà Hát Lớn Hà Nội còn lại khoảng 3 kilômét, dự kiến 5 phút nữa sẽ tới.",
-                    "Xe chuẩn bị rẽ vào phố Lò Đúc. Phố Lò Đúc có nhiều cây sao đen cổ thụ tuyệt đẹp bên đường.",
-                    "Đang di chuyển qua ngã năm Lò Đúc - Phan Chu Trinh. Chúng ta đang tiến rất gần đến phố Tràng Tiền.",
+                    // "Xe đang di chuyển trên đường nội khu Đại học VinUni, chuẩn bị rẽ ra đại lộ Đại Dương.",
+                    // "Đã rẽ phải vào đại lộ Đại Dương. Tốc độ xe ổn định ở mức 40 kilômét trên giờ. Thời tiết hôm nay rất thuận lợi cho chuyến đi của bạn.",
+                    // "Chuẩn bị đi qua bùng binh Đại Dương, xe sẽ rẽ ra đường Lý Thánh Tông hướng về phía cao tốc.",
+                    // "Đang di chuyển trên đường Lý Thánh Tông. Phía trước có mật độ giao thông thưa thớt, xe đang di chuyển thông thoáng.",
+                    // "Xe chuẩn bị rẽ vào đường gom Đại lộ Vinhomes Ocean Park để đi về hướng cầu Vĩnh Tuy.",
+                    // "Hiện tại xe đang đi song song với đường cao tốc Hà Nội - Hải Phòng. Quý khách vui lòng thắt dây an toàn đầy đủ.",
+                    // "Chuẩn bị đi qua khu vực Đa Tốn. Quãng đường còn lại đến Nhà Hát Lớn là khoảng 12 kilômét.",
+                    // "Xe đã đi vào đường Cổ Linh. Đây là tuyến đường chính kết nối Quận Long Biên và Gia Lâm.",
+                    // "Đang di chuyển qua Aeon Mall Long Biên bên tay phải quý khách. Giao thông tại ngã tư Cổ Linh hiện tại ổn định.",
+                    // "Chuẩn bị lên cầu Vĩnh Tuy để vượt sông Hồng sang quận Hai Bà Trưng. Quý khách có thể ngắm nhìn sông Hồng bên tay phải.",
+                    // "Xe đang di chuyển trên cầu Vĩnh Tuy. Gió nhẹ, tốc độ xe đạt 50 kilômét trên giờ. Chúng ta đã đi được nửa chặng đường.",
+                    // "Đã đi hết cầu Vĩnh Tuy, xe chuẩn bị rẽ vào đường Minh Khai để hướng về trung tâm thành phố.",
+                    // "Đang di chuyển trên đường Minh Khai. Giao thông phía dưới hơi đông đúc nhưng xe chúng ta vẫn di chuyển tốt.",
+                    // "Chuẩn bị rẽ phải vào phố Kim Ngưu tại nút giao tiếp theo. Quý khách vui lòng chú ý hành lý cá nhân.",
+                    // "Xe đang đi dọc theo phố Kim Ngưu, chuẩn bị rẽ sang đường Trần Khát Chân.",
+                    // "Đã rẽ vào đường Trần Khát Chân. Quãng đường đến Nhà Hát Lớn Hà Nội còn lại khoảng 3 kilômét, dự kiến 5 phút nữa sẽ tới.",
+                    // "Xe chuẩn bị rẽ vào phố Lò Đúc. Phố Lò Đúc có nhiều cây sao đen cổ thụ tuyệt đẹp bên đường.",
+                    // "Đang di chuyển qua ngã năm Lò Đúc - Phan Chu Trinh. Chúng ta đang tiến rất gần đến phố Tràng Tiền.",
                     "Xe đã đi vào phố Tràng Tiền và đang tiến vào khu vực Nhà Hát Lớn Hà Nội. Điểm đến của quý khách ở phía trước. Cảm ơn quý khách đã đồng hành cùng Xanh SM!"
                 ];
 
@@ -1606,43 +1483,21 @@ function finalizeBooking(pickupLoc, dist, price, destinationLoc) {
                     let announcementIndex = 0;
 
                     function sendAnnouncement() {
-                        if (announcementIndex >= routeAnnouncements.length) return;
-
-                        const routeBubble = document.createElement('div');
-                        routeBubble.style.alignSelf = 'flex-start';
-                        routeBubble.style.background = '#f0fdfc';
-                        routeBubble.style.border = '1px solid #b2dfdb';
-                        routeBubble.style.padding = '8px 12px';
-                        routeBubble.style.borderRadius = '16px 16px 16px 0';
-                        routeBubble.style.maxWidth = '85%';
-                        routeBubble.style.marginBottom = '8px';
-
-                        routeBubble.innerHTML = `<span style="color: #00bcd4; margin-right: 4px;"><i class="fa-solid fa-robot"></i> AI:</span> ${routeAnnouncements[announcementIndex]}`;
-                        textBoard.appendChild(routeBubble);
-                        textBoard.scrollTop = textBoard.scrollHeight;
-                        speakAI(routeAnnouncements[announcementIndex]);
-
-                        announcementIndex++;
-
-                        if (announcementIndex < routeAnnouncements.length) {
-                            setTimeout(sendAnnouncement, 1000); // Every 1 second
-                        } else {
-                            // Wait for WebSocket trip completed confirmation from driver side
-                            console.log('All announcements finished. Waiting for driver to confirm trip completion via WebSocket...');
-                            
-                            let completionFallbackTimer = setTimeout(() => {
-                                if (typeof window.onWebSocketTripCompleted !== 'undefined' && window.onWebSocketTripCompleted) {
-                                    console.log('WebSocket trip completion fallback triggered.');
-                                    window.onWebSocketTripCompleted();
-                                }
-                            }, 25000); // 25s auto fallback if websocket not connected
-                            
-                            window.onWebSocketTripCompleted = () => {
-                                clearTimeout(completionFallbackTimer);
-                                window.onWebSocketTripCompleted = null;
-                                sendTripCompletion();
-                            };
-                        }
+                        // Wait for WebSocket trip completed confirmation from driver side
+                        console.log('All announcements skipped. Waiting for driver to confirm trip completion via WebSocket...');
+                        
+                        let completionFallbackTimer = setTimeout(() => {
+                            if (typeof window.onWebSocketTripCompleted !== 'undefined' && window.onWebSocketTripCompleted) {
+                                console.log('WebSocket trip completion fallback triggered.');
+                                window.onWebSocketTripCompleted();
+                            }
+                        }, 25000); // 25s auto fallback if websocket not connected
+                        
+                        window.onWebSocketTripCompleted = () => {
+                            clearTimeout(completionFallbackTimer);
+                            window.onWebSocketTripCompleted = null;
+                            sendTripCompletion();
+                        };
                     }
 
                     function sendTripCompletion() {
